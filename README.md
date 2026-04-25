@@ -1,6 +1,6 @@
-# 👿 FPAA - O Nível Final do Inferno da PUC Minas 👿
+# 👿 FPAA - O Nível Final do Inferno da Engenharia de Software 👿
 
-![demon-welcome](https://media.giphy.com/media/3o7TKU8LyD2l0XoXBS/giphy.gif)
+![demon-welcome](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdm9zenB2YmhjNzhteWNsMng0b3FiZ2RvOWlsMWFzZXJheWdmZTluaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l46CsaquyQudrz3Lq/giphy.gif)
 
 ## ⚠️ MENSAGEM DO PROFESSOR FELIPE ⚠️
 
