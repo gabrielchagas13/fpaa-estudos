@@ -24,6 +24,18 @@
 | **Kahn** | Ordenação topológica (por grau de entrada) | O(V + E) |
 | **Prim** | Árvore geradora mínima (expande de um vértice) | O(E + V log V) |
 | **Kruskal** | Árvore geradora mínima (ordena arestas, usa Union-Find) | O(E log E) |
+| | | |
+| **Algoritmo** | **Ordenação / Busca** | **Complexidade** |
+| **Bubble Sort** | Ordenação por troca (compara adjacentes) | O(n²) |
+| **Selection Sort** | Ordenação por seleção (acha o mínimo e coloca na posição) | O(n²) |
+| **Insertion Sort** | Ordenação por inserção (insere cada elemento na posição certa) | O(n²) melhor O(n) |
+| **Merge Sort** | Ordenação por divisão e conquista (divide, ordena, intercala) | O(n log n) |
+| **Quick Sort** | Ordenação por divisão e conquista (pivô + partição) | O(n log n) médio, O(n²) pior |
+| **Heap Sort** | Ordenação usando heap (árvore binária) | O(n log n) |
+| **Counting Sort** | Ordenação por contagem (inteiros em faixa limitada) | O(n + k) |
+| **Radix Sort** | Ordenação dígito a dígito | O(d × (n + k)) |
+| **Busca Linear** | Buscar elemento em vetor não ordenado | O(n) |
+| **Busca Binária** | Buscar elemento em vetor **ordenado** | O(log n) |
 
 ---
 
@@ -295,6 +307,14 @@ Contar a quantidade de subconjuntos existentes em um conjunto qualquer.
 | **Kosaraju** | Componentes fortemente conexas | Grafos dir. |
 | **Ord. Topológica** | Ordenar DAG por dependências | Grafos dir. |
 | **Kahn** | Ord. topológica por grau de entrada | Grafos dir. |
+| **Bubble Sort** | Ordenação O(n²), estável | Ordenação |
+| **Selection Sort** | Ordenação O(n²), não estável | Ordenação |
+| **Insertion Sort** | Ordenação O(n²), melhor caso O(n) | Ordenação |
+| **Merge Sort** | Ordenação O(n log n), estável, divisão e conquista | Ordenação |
+| **Quick Sort** | Ordenação O(n log n) médio, O(n²) pior | Ordenação |
+| **Heap Sort** | Ordenação O(n log n), in-place | Ordenação |
+| **Busca Linear** | Buscar em vetor qualquer O(n) | Busca |
+| **Busca Binária** | Buscar em vetor ordenado O(log n) | Busca |
 
 ### Macetes para decorar
 
@@ -308,3 +328,9 @@ Contar a quantidade de subconjuntos existentes em um conjunto qualquer.
 - **Euleriano?** → BFS/DFS + graus pares
 - **Componentes fortemente conexas?** → Kosaraju ou DFS duas vezes
 - **Ordenar DAG?** → Kahn ou DFS com pilha
+- **Ordenar vetor (geral)?** → Merge Sort ou Quick Sort (O(n log n))
+- **Ordenar vetor (quase ordenado)?** → Insertion Sort (O(n) melhor caso)
+- **Ordenar vetor (poucos elementos)?** → Bubble Sort / Selection Sort (O(n²) mas simples)
+- **Ordenar inteiros em faixa limitada?** → Counting Sort (O(n + k))
+- **Buscar em vetor não ordenado?** → Busca Linear (O(n))
+- **Buscar em vetor ordenado?** → Busca Binária (O(log n))
