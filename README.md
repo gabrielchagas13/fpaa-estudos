@@ -32,11 +32,11 @@ A questão que 50 ANOS ninguém responde = US$ 1.000.000
 *Substitua "mal" por "P vs NP"*
 
 > **"Se você passou COLANDO em Grafos, REZE A DEUS agora. Porque aqui, não existe coincidência."** 
-> — Professor Felipe, provavelmente
+
 
 ---
 
-## � Progressão do Sofrimento na PUC Minas
+## � Progressão do Sofrimento na Engenharia de Software
 
 ```
 AEDS 1            ▮▮░░░░░░░░ 20%  (Iniciante)
@@ -48,13 +48,13 @@ FPAA              ▮▮▮▮▮▮▮▮▮▮ 100% 👿 VOCÊ ENTROU NO CÍRC
 
 ---
 
-## 🎓 PUCMINAS HARDMODE ACTIVATED
+## 🎓 Engenharia de Software HARDMODE ACTIVATED
 
 **Você não achou que AEDS 2 era difícil? Você achou que Grafos era "moleza"?**
 
 Bem-vindo à verdade: em FPAA, **não existe certo e errado. Tudo é interpretativo.** E isso é exatamente o que o torna assustador.
 
-Surpresa! Essa é a matéria que tira o sono de pesquisadores desde 1971. O Professor Felipe acabou de colocar você no nível **DEMÔNIO** da PUC Minas.
+Surpresa! Essa é a matéria que tira o sono de pesquisadores desde 1971. Você foi colocado no nível **DEMÔNIO** da engenharia de software.
 
 ```
 ╔════════════════════════════════════════════╗
@@ -69,11 +69,19 @@ Surpresa! Essa é a matéria que tira o sono de pesquisadores desde 1971. O Prof
 
 ### ⚠️ AVISO CRÍTICO: VOCÊ TEM QUE SABER GRAFOS
 
-![warning](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjd3dW94YXRuOHhnY3R1dWlkamJ6OHdldnVuZHEzOG93aTRhNTF3ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/112o4nufJ2Nbtm/giphy.gif)
-
 **SE VOCÊ NÃO SOUBER GRAFOS, VOCÊ TÁ FUDIDO.** Reduções são sobre transformar grafos. SAT é sobre atribuição. Clique, Cobertura, Hamiltoniano... tudo é GRAFO. Se você não sabe BFS, DFS, caminhos mínimos, ciclos... você está perdido desde a primeira aula.
 
 Grafos pode parecer "moleza" comparado a AEDS 2, mas é a base de TUDO aqui. Você foi avisado.
+
+---
+
+### 🚨 AVISO SOBRE PROCRASTINAÇÃO
+
+**SE VOCÊ ESTÁ PENSANDO EM ESTUDAR 3 DIAS ANTES DA PROVA, DESISTA AGORA.**
+
+Essa matéria não é algo que você estuda no fim de semana. P vs NP não vai ficar claro mágicamente. Reduções Polinomiais não entram na cabeça em 72 horas. Você precisa de tempo, muito tempo, e ainda assim vai sair confuso.
+
+O mínimo? 3 semanas de dedicação REAL. Se você começar na última semana, reze.
 
 ---
 
@@ -90,18 +98,6 @@ Você achou que dominou tudo? Bem-vindo ao chefe final: **P vs NP**.
 
 ---
 
-## 💀 Trocadilhos do Professor Felipe (Use por Sua Conta e Risco)
-
-> *"Hoje vamos falar de **Redução Polinomial**... e SIM, vou **reduzir seu tempo de sono** também."*
-
-> *"Quando vocês virem SAT pela primeira vez vão falar: **'Eu Sou Azarado e Triste'**."*
-
-> *"NP-Completo? Mais como **Não Pude Completar** a sanidade."*
-
-> *"A diferença entre Grafos e NP-Completo? Em Grafos, você acha a resposta. Aqui, você reza pra ela existir."*
-
----
-
 ## ✨ Mensagem Universal ✨
 
 ```
@@ -112,7 +108,6 @@ Você está pronto pra FPAA? ⚠️  NÃO, MAS VÁ ASSIM MESMO
 
 "Não é sobre estar pronto.
 É sobre se recusar a desistir."
-— Provavelmente o Professor Felipe em alguma aula
 ```
 
 ---
@@ -151,6 +146,12 @@ fpaa-estudos/
 
 ---
 
+### Se possível, fazer o uso de algum toxicológico para tentar entender
+
+![drugs](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHJ6cTMxYmVtZzhpazIwYXFoODduNHI1NXJpenAxdHkzcWowZnB3MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/W9Dqbvo0jL56KswpKG/giphy.gif)
+
+---
+
 ### SE VOCÊ CONSEGUIR PASSAR: CAMPEÃO DO MUNDO! 🏆
 
 ![champion](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGxzemlvYmZrb3pueDM0OWMyOXZsOTFmNmszdXJvNXBnazFkemFhMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1BfPP1taCof3s61x71/giphy.gif)
@@ -169,7 +170,7 @@ fpaa-estudos/
        derrotar a redução polinomial,
        e sair dessa matéria como LENDA
        
-    O Professor Felipe espera por você.
+    O demônio espera por você.
 ```
 
 ### 🔥 A Verdade Que Ninguém Te Conta
@@ -215,7 +216,7 @@ prova 02/
 > — Provavelmente verdade
 
 > **"P vs NP é como uma receita de bolo: fácil verificar se ficou bom, difícil descobrir como fazer."**
-> — Professor Felipe entendendo você
+> — Alguém que também sofreu
 
 ---
 
