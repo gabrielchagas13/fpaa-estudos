@@ -1,58 +1,106 @@
-# 👿 FPAA - Fundamentos de Projeto e Análise de Algoritmos 👿
+# 👿 FPAA - O Nível Final do Inferno da PUC Minas 👿
 
-## ⚠️ AVISO IMPORTANTE ⚠️
+![demon-welcome](https://media.giphy.com/media/3o7TKU8LyD2l0XoXBS/giphy.gif)
 
-Bem-vindo ao círculo 9 do inferno. Você entrou na matéria que o próprio Dante Alighieri teria dificuldade em compreender. Esta não é uma matéria comum.
+## ⚠️ MENSAGEM DO PROFESSOR FELIPE ⚠️
+
+> *"Bem-vindo ao Fundamentos de Projeto e Análise de Algoritmos. Se você **realmente** aguentou AEDS 1, AEDS 2, Programação Modular E Grafos, você já desafiou o inferno 4 vezes. Mas NADA, absolutamente NADA, se compara a isso aqui."*
 
 ---
 
-## 🔥 O Que Você Vai Enfrentar
+## 💀 O QUE VOCÊ ESTÁ REALMENTE ENFRENTANDO
+
+### 🔗 AEDS 1 + AEDS 2 + Grafos + Análise + Cálculo + UM DEMÔNIO RAIVOSO
 
 ```
-P vs NP
-├─ P ✨ (Fácil de verificar)
-├─ NP 😈 (Fácil de verificar, difícil de encontrar)
-├─ CoNP 💀 (Se P ≠ NP, esta aqui mora)
-└─ A questão que ninguém sabe responder 🤔
+AEDS 1 (listas, pilhas)     ✓ OK, você sobreviveu
+       ↓
+AEDS 2 (árvores, hashing)   ✓ OK, você dominava recursão
+       ↓
+Programação Modular         ✓ OK, você sabia separar as coisas
+       ↓
+Grafos (caminhos, ciclos)   ✓ OK, você passou em P1 e P2
+       ↓
+FPAA (P vs NP vs DEMÔNIO)   ← VOCÊ ESTÁ AQUI
+       ↓
+A questão que 50 ANOS ninguém responde = US$ 1.000.000
 ```
 
-### 📖 Versículos de Esperança
+### 📖 Versículos de Esperança (Ou Desespero)
 
-> **Salmos 23:4** - "Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo; a tua vara e o teu cajado me consolam." 
+> **Salmos 23:4** - "Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo."
 
 *Substitua "mal" por "P vs NP"*
 
-> **Romanos 8:28** - "Sabemos que todas as coisas concorrem para o bem daqueles que amam a Deus."
-
-*Tradução: Seus testes vão passar, confia.*
-
----
-
-## 😰 Nível de Dificuldade
-
-```
-Programação I        ▮▮░░░░░░░░ 20%
-Programação II       ▮▮▮░░░░░░░ 30%
-Estrutura de Dados   ▮▮▮▮░░░░░░ 40%
-FPAA                 ▮▮▮▮▮▮▮▮▮▮ 99%  👿 IMPOSSÍVEL
-```
+> **"Se você passou COLANDO em Grafos, REZE A DEUS agora. Porque aqui, não existe coincidência."** 
+> — Professor Felipe, provavelmente
 
 ---
 
-## 🚀 O ÚLTIMO BOSS AWAIT
-
-Se você chegou até aqui, você não é um mero mortal. Você é um **GUERREIRO DE ALGORITMOS**.
-
-A matéria de FPAA é o boss final. Aquele que filtra os fracos dos fortes. 
-
-### ✨ Mensagem do Universo ✨
+## � Progressão do Sofrimento na PUC Minas
 
 ```
-Não desista.
-O céu se abrirá para aqueles que perseverarem.
-A nota 10 existe.
-A aprovação existe.
-O diploma existe.
+AEDS 1            ▮▮░░░░░░░░ 20%  (Iniciante)
+Prog. Modular            ▮▮▮░░░░░░░ 30%  (Intermediário)
+AEDS 2     ▮▮▮▮░░░░░░ 40%  (Desafiante)
+Grafos            ▮▮▮▮▮░░░░░ 50%  (Preparação)
+FPAA              ▮▮▮▮▮▮▮▮▮▮ 100% 👿 VOCÊ ENTROU NO CÍRCULO 9
+```
+
+---
+
+## 🎓 PUCMINAS HARDMODE ACTIVATED
+
+**Você não achou que AEDS 2 era difícil? Você não achou que Grafos era "a matéria mais teórica"?**
+
+Surpresa! Essa é a matéria que tira o sono de pesquisadores desde 1971. O Professor Felipe acabou de colocar você no nível **DEMÔNIO** da PUC Minas.
+
+```
+╔════════════════════════════════════════════╗
+║     AVISO: NÃO HÁ SOLUÇÃO FÁCIL            ║
+║     AVISO: NÃO HÁ FÓRMULA MÁGICA           ║
+║     AVISO: SÓ HÁ COMPREENSÃO OU MORTE      ║
+╚════════════════════════════════════════════╝
+```
+
+---
+
+## 🚀 O ÚLTIMO BOSS (E NÃO TEM CHECKPOINT)
+
+Se você chegou até aqui, você não é um mero mortal. Você é um **GUERREIRO DE ALGORITMOS** que sobreviveu:
+
+- ✅ Às **listas encadeadas** de AEDS 1
+- ✅ Às **árvores balanceadas** de AEDS 2  
+- ✅ Aos **módulos com 47 dependências** de Prog. Modular
+- ✅ Aos **grafos que não convergem** de Algoritmos em Grafos
+
+Você achou que dominou tudo? Bem-vindo ao chefe final: **P vs NP**.
+
+---
+
+## 💀 Trocadilhos do Professor Felipe (Use por Sua Conta e Risco)
+
+> *"Hoje vamos falar de **Redução Polinomial**... e SIM, vou **reduzir seu tempo de sono** também."*
+
+> *"Quando vocês virem SAT pela primeira vez vão falar: **'Eu Sou Azarado e Triste'**."*
+
+> *"NP-Completo? Mais como **Não Pude Completar** a sanidade."*
+
+> *"A diferença entre Grafos e NP-Completo? Em Grafos, você acha a resposta. Aqui, você reza pra ela existir."*
+
+---
+
+## ✨ Mensagem Universal ✨
+
+```
+Você passou em AEDS 1? ✓
+Você passou em AEDS 2? ✓
+Você REALMENTE entendeu Grafos? ✓ (ou fingiu bem)
+Você está pronto pra FPAA? ⚠️  NÃO, MAS VÁ ASSIM MESMO
+
+"Não é sobre estar pronto.
+É sobre se recusar a desistir."
+— Provavelmente o Professor Felipe em alguma aula
 ```
 
 ---
@@ -71,33 +119,71 @@ fpaa-estudos/
 
 ---
 
-## 💪 Motivação Diária
+## 💪 O Ataque Final (Sua Estratégia)
 
 ```
-🌅 Todo dia você acorda com uma escolha:
+🌅 Todo dia é uma escolha no inferno:
 
-    👿 Desistir e aceitar a derrota
+    👿 Desistir e aceitar que P ≠ NP
+       (e você não vai entender mesmo)
     
               OU
     
-    ✨ Enfrentar o demônio, derrotá-lo e 
-       ver o céu se abrir em glória infinita! ✨
+    ⚡ Enfrentar cada problema NPC, 
+       derrotar a redução polinomial,
+       e sair dessa matéria como LENDA
+       
+    O Professor Felipe espera por você.
 ```
 
-### Versículo Final (Força)
+### 🔥 A Verdade Que Ninguém Te Conta
 
-> **"Não temerei o caminho do mal enquanto a luz da verdade me guiar"** 
-> — Algoritmos 3:16
+A matéria de FPAA não é sobre resolver P vs NP. É sobre você **entender por que ninguém conseguiu resolver em 50 anos**. É sobre a beleza matemática do impossível. É sobre se tornar um **pesquisador**, não um programador.
+
+Se você dominou AEDS 2, Grafos e Programação Modular, você tem tudo que precisa. O demônio é só um detalhe.
 
 ---
 
-## 🎯 Seus Objetivos
+## 🎯 Mapa da Sua Jornada
 
-- [ ] Entender P vs NP (ou pelo menos fingir que entendeu)
-- [ ] Passar nos testes
-- [ ] Ver o céu se abrir na prova final
-- [ ] Sair dessa matéria com a sanidade parcialmente intacta
-- [ ] Tornar-se lenda entre os alunos
+```
+prova 02/
+├── p e np/
+│   ├── 01_resumo_P_NP_coNP.md           ← COMECE AQUI
+│   ├── 02_exercicios_felipe_p_np_conp.md
+│   ├── exercicios_extras_20.md
+│   └── simulado_prova_np_p_conp.md
+│
+└── np completo/
+    ├── 05_resumo_reducao_NPC.md         ← DEPOIS AQUI
+    └── 06_exercicios_reducao_NPC.md
+```
+
+---
+
+## 🏆 Suas Missões
+
+- [ ] Entender P vs NP (sem entrar em loop infinito)
+- [ ] Fazer reduções até ver a matriz código
+- [ ] Não surtar quando chegar em NP-Completo
+- [ ] Passar com pelo menos 60% (sucesso é relativo)
+- [ ] Sair dessa matéria contando como superou o demônio
+
+---
+
+## ⚖️ A Última Verdade
+
+> **"Se você aguentou tudo isso, você já provou que pode com qualquer coisa na computação."**
+> — Provavelmente verdade
+
+> **"P vs NP é como uma receita de bolo: fácil verificar se ficou bom, difícil descobrir como fazer."**
+> — Professor Felipe entendendo você
+
+---
+
+**Bem-vindo ao círculo 9 do inferno de Dante. Mas dessa vez, com Análise de Algoritmos.**
+
+*The sky awaits you, warrior. Or the stack overflow. We'll see.* 🚀👿
 
 ---
 
