@@ -146,15 +146,15 @@ fpaa-estudos/
 
 ---
 
-### Se possível, fazer o uso de algum toxicológico para tentar entender
+### SE VOCÊ CONSEGUIR PASSAR: CAMPEÃO DO MUNDO! 🏆
 
-![drugs](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHJ6cTMxYmVtZzhpazIwYXFoODduNHI1NXJpenAxdHkzcWowZnB3MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/W9Dqbvo0jL56KswpKG/giphy.gif)
+![champion](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmUydmxxMWM1djNmNGJ0dzBud2FzeTZ6NTJqeTVhdjR1ejAzYWkyNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zcmkVm62H8JS289QVV/giphy.gif)
 
 ---
 
-### SE VOCÊ CONSEGUIR PASSAR: CAMPEÃO DO MUNDO! 🏆
+### Se possível, fazer o uso de algum toxicológico para tentar entender
 
-![champion](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGxzemlvYmZrb3pueDM0OWMyOXZsOTFmNmszdXJvNXBnazFkemFhMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1BfPP1taCof3s61x71/giphy.gif)
+![drugs](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHJ6cTMxYmVtZzhpazIwYXFoODduNHI1NXJpenAxdHkzcWowZnB3MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/W9Dqbvo0jL56KswpKG/giphy.gif)
 
 ---
 
