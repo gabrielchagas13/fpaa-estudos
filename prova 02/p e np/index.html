@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Exercícios P, NP e co-NP — FPAA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #d8d6cf;
+  --border-dark: #a8a6a0;
+  --text: #1a1917;
+  --muted: #6b6a66;
+  --accent: #1a1917;
+  --green: #2d6a2d;
+  --green-bg: #eaf4ea;
+  --green-border: #90c890;
+  --red: #a32020;
+  --red-bg: #faeaea;
+  --red-border: #e8a0a0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf4e0;
+  --amber-border: #e8c870;
+  --purple: #3d2d8a;
+  --purple-bg: #f0eefa;
+  --purple-border: #c0b0f0;
+  --blue: #0f3d6e;
+  --blue-bg: #e8f2fc;
+  --font-main: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.header {
+  border: 2px solid var(--text);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; right: -4px; bottom: -4px;
+  border: 2px solid var(--border-dark);
+  z-index: -1;
+}
+
+.header h1 { font-size: 20px; margin-bottom: 8px; font-weight: 500; }
+.header p { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+.nav-bar {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--blue-bg);
+  border: 1px solid #90c8e8;
+  border-radius: 6px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-bar a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all .2s;
+}
+
+.nav-bar a:hover { background: var(--blue-bg); }
+
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.q-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.q-content {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.q-content strong { font-weight: 500; }
+
+.show-ans-btn {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 7px 16px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.show-ans-btn:hover { background: var(--bg); color: var(--text); }
+
+.ans-box {
+  display: none;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--blue-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--blue);
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.7;
+}
+
+.ans-box.show { display: block; }
+.ans-box strong { font-weight: 500; }
+.ans-box code { background: rgba(15,61,110,.1); padding: 2px 4px; border-radius: 2px; }
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .nav-bar { flex-direction: column; }
+  .nav-bar a { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Exercícios — P, NP e co-NP</h1>
+    <p>Professor Felipe de Castro Belém · PUC Minas</p>
+    <p>Fundamentos de Projeto e Análise de Algoritmos</p>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../../simulado/">← Voltar ao Simulado</a>
+    <a href="../transformacao%20e%20reducao/">Ir para Transformação e Redução →</a>
+    <a href="../prova%20antiga/">Ir para Prova Antiga →</a>
+  </div>
+
+  <div class="sec-title">📋 Objetivo</div>
+  <p style="margin-bottom: 2rem; font-size: 14px; line-height: 1.7;">Verificar se os problemas abaixo pertencem à classe <strong>P</strong>, <strong>NP</strong> e/ou <strong>co-NP</strong>. Forneça o problema de decisão correspondente (certificado positivo e negativo). Explique seu raciocínio.</p>
+
+  <div class="sec-title">Exercícios</div>
+
+  <div class="question">
+    <div class="q-title">Exercício 1 — Maior valor de um vetor</div>
+    <div class="q-content">Encontrar o maior valor de um vetor.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado vetor V de n elementos e valor k, o maior valor de V é ≥ k?"<br><br>
+      <strong>Certificado +:</strong> Índice i com V[i] ≥ k e V[i] = max. Verificação: percorrer o vetor confirmando → O(n).<br><br>
+      <strong>Certificado −:</strong> Percorrer e verificar que todos &lt; k → O(n).<br><br>
+      <strong>Resolução:</strong> Percorrer o vetor uma vez → O(n) → polinomial.<br><br>
+      <strong>Classificação: ∈ P</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 2 — Avaliar se um número é primo</div>
+    <div class="q-content">Avaliar se um dado número é primo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado n, n é primo?"<br><br>
+      <strong>Certificado +:</strong> Verificar primalidade (teste de divisibilidade até √n) → O(√n).<br><br>
+      <strong>Certificado −:</strong> Fornecer um divisor d de n onde 1 &lt; d &lt; n → verificar em O(1).<br><br>
+      <strong>Resolução:</strong> Algoritmo AKS (2002) prova primalidade em tempo polinomial O((log n)^6).<br><br>
+      <strong>Classificação: ∈ P</strong> (desde AKS 2002; antes era ∈ NP ∩ co-NP)
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 3 — Ordenar um vetor em ordem crescente</div>
+    <div class="q-content">Ordenar um vetor de maneira crescente.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado vetor V, existe permutação de V que está ordenada em ordem crescente?"<br><br>
+      <strong>Nota:</strong> Este é um problema de otimização, não decisão pura. Sua versão de decisão é trivial (resposta sempre SIM para qualquer vetor).<br><br>
+      <strong>Resolução:** Qualquer algoritmo de ordenação: Merge Sort, Heap Sort em O(n log n) → polinomial.<br><br>
+      <strong>Classificação: ∈ P</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 4 — Avaliar se um grafo é hamiltoniano</div>
+    <div class="q-content">Avaliar se um grafo é hamiltoniano.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G, existe ciclo que visita todos os vértices exatamente uma vez?"<br><br>
+      <strong>Certificado +:</strong> Fornecer a sequência de vértices do ciclo Hamiltoniano → verificar que é ciclo simples visitando todos → O(V²).<br><br>
+      <strong>Certificado −:</strong> Nenhum conhecido em tempo polinomial.<br><br>
+      <strong>Status:</strong> Nenhum algoritmo polinomial conhecido para resolvê-lo. Brute force: O((V-1)!) → exponencial.<br><br>
+      <strong>Classificação: ∈ NP-Completo</strong> (∈ NP e NP-Difícil; não se sabe se está em P)
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 5 — Avaliar se um grafo é euleriano</div>
+    <div class="q-content">Avaliar se um grafo é euleriano.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G conexo, existe ciclo que visita todas as arestas exatamente uma vez?"<br><br>
+      <strong>Teorema de Euler:</strong> Um grafo conexo tem ciclo Euleriano ⟺ todo vértice tem grau par.<br><br>
+      <strong>Resolução:</strong> Verificar grau de cada vértice → O(V) → polinomial.<br><br>
+      <strong>Certificado +:</strong> Verificar que todos os vértices têm grau par → O(V).<br><br>
+      <strong>Classificação: ∈ P</strong> (é fácil!)
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 6 — Encontrar uma árvore geradora de um grafo</div>
+    <div class="q-content">Encontrar uma árvore geradora de um grafo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G, existe uma árvore geradora (subgrafo conexo acíclico com V-1 arestas)?"<br><br>
+      <strong>Resolução:</strong> BFS/DFS → O(V+E) → polinomial. Se o grafo é conexo, sempre tem árvore geradora.<br><br>
+      <strong>Certificado +:</strong> Fornecer o conjunto de V-1 arestas que forma a árvore → verificar conexidade e aciclicidade → O(V+E).<br><br>
+      <strong>Classificação: ∈ P</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 7 — Verificar se um grafo é 3-colorável</div>
+    <div class="q-content">Verificar se um grafo é 3-colorável.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G, existe atribuição de cores {1,2,3} aos vértices tal que nenhuma aresta conecta vértices da mesma cor?"<br><br>
+      <strong>Certificado +:</strong> Fornecer a coloração → verificar que nenhuma aresta conecta vértices com mesma cor → O(E).<br><br>
+      <strong>Certificado −:</strong> Nenhum conhecido em tempo polinomial.<br><br>
+      <strong>Status:</strong> 3-SAT reduz para 3-Coloração. Nenhum algoritmo polinomial conhecido.<br><br>
+      <strong>Classificação: ∈ NP-Completo</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 8 — Verificar se um grafo é 2-colorável</div>
+    <div class="q-content">Verificar se um grafo é 2-colorável.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G, G é bipartido (2-colorável)?"<br><br>
+      <strong>Resolução:</strong> BFS/DFS tentando 2-colorir → O(V+E) → polinomial. Se houver ciclo ímpar, não é bipartido.<br><br>
+      <strong>Certificado +:</strong> Fornecer a bipartição (dois conjuntos de vértices) → verificar que não há aresta dentro dos conjuntos → O(E).<br><br>
+      <strong>Classificação: ∈ P</strong> (contraste com 3-coloração!)
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 9 — Encontrar o maior subgrafo completo (Clique)</div>
+    <div class="q-content">Encontrar o maior subgrafo completo (i.e., clique) de um grafo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G e inteiro k, existe clique de tamanho ≥ k?"<br><br>
+      <strong>Certificado +:</strong> Fornecer k vértices que formam clique → verificar que todos são mutuamente adjacentes → O(k²).<br><br>
+      <strong>Certificado −:</strong> Nenhum conhecido em tempo polinomial.<br><br>
+      <strong>Status:</strong> Brute force: testar todas as combinações de k vértices → C(V,k) = exponencial.<br><br>
+      <strong>Classificação: ∈ NP-Completo</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 10 — Encontrar o conjunto independente máximo</div>
+    <div class="q-content">Encontrar o conjunto independente máximo de um grafo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G e inteiro k, existe conjunto independente de tamanho ≥ k?"<br><br>
+      <strong>Certificado +:</strong> Fornecer k vértices sem nenhuma aresta entre eles → verificar ausência de arestas → O(k²).<br><br>
+      <strong>Certificado −:</strong> Nenhum conhecido em tempo polinomial.<br><br>
+      <strong>Relação com Clique:</strong> Conjunto independente em G ⟺ Clique no complemento de G.<br><br>
+      <strong>Classificação: ∈ NP-Completo</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 11 — Encontrar a cobertura mínima de vértices</div>
+    <div class="q-content">Encontrar a cobertura mínima de vértices de um grafo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G e inteiro k, existe conjunto de ≤ k vértices que toca todas as arestas?"<br><br>
+      <strong>Certificado +:</strong> Fornecer k vértices → verificar que toda aresta tem pelo menos um extremo nesse conjunto → O(k·E).<br><br>
+      <strong>Certificado −:</strong> Nenhum conhecido em tempo polinomial.<br><br>
+      <strong>Relação com Independente:</strong> S é cobertura de vértices ⟺ V \ S é conjunto independente.<br><br>
+      <strong>Classificação: ∈ NP-Completo</strong>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 12 — Encontrar a cobertura mínima de arestas</div>
+    <div class="q-content">Encontrar a cobertura mínima de arestas de um grafo.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado grafo G e inteiro k, existe conjunto de ≤ k arestas que toca todos os vértices?"<br><br>
+      <strong>Resolução:</strong> Este é equivalente ao problema de emparelhamento máximo, que pode ser resolvido em tempo polinomial via algoritmos de fluxo (Hopcroft-Karp: O(E√V)) ou programação linear.<br><br>
+      <strong>Certificado +:</strong> Fornecer k arestas → verificar que todo vértice tem pelo menos uma aresta nesse conjunto → O(k + V).<br><br>
+      <strong>Classificação: ∈ P</strong> (contraste com cobertura de vértices!)
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-title">Exercício 13 — Contar a quantidade de subconjuntos em um conjunto</div>
+    <div class="q-content">Contar a quantidade de subconjuntos existentes em um conjunto qualquer.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">
+      <strong>Problema de decisão:</strong> "Dado conjunto S de n elementos e inteiro k, existe mais de k subconjuntos de S?"<br><br>
+      <strong>Resolução:</strong> Um conjunto de n elementos tem exatamente 2^n subconjuntos. Isso é uma fórmula fixa → O(1) para calcular (2^n é exponencial em valor, não em representação em bits).<br><br>
+      <strong>Resosta:</strong> Sempre SIM, pois 2^n > k para qualquer k ≤ 2^(n-1). Se k > 2^n, resposta é NÃO.<br><br>
+      <strong>Certificado +/−:</strong> Comparação aritmética: 2^n ≥ k? → O(1).<br><br>
+      <strong>Classificação: ∈ P</strong>
+    </div>
+  </div>
+
+  <footer>
+    Exercícios P, NP e co-NP &nbsp;|&nbsp; Prof. Felipe Belém — PUC Minas &nbsp;|&nbsp; FPAA 2026
+  </footer>
+
+</div>
+
+<script>
+function toggleAns(btn) {
+  const box = btn.nextElementSibling;
+  const showing = box.classList.contains("show");
+  box.classList.toggle("show");
+  btn.textContent = showing ? "Ver gabarito ↓" : "Ocultar gabarito ↑";
+}
+</script>
+</body>
+</html>

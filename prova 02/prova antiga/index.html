@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prova Antiga — Prova 02 FPAA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #d8d6cf;
+  --border-dark: #a8a6a0;
+  --text: #1a1917;
+  --muted: #6b6a66;
+  --accent: #1a1917;
+  --green: #2d6a2d;
+  --green-bg: #eaf4ea;
+  --green-border: #90c890;
+  --red: #a32020;
+  --red-bg: #faeaea;
+  --red-border: #e8a0a0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf4e0;
+  --amber-border: #e8c870;
+  --purple: #3d2d8a;
+  --purple-bg: #f0eefa;
+  --purple-border: #c0b0f0;
+  --blue: #0f3d6e;
+  --blue-bg: #e8f2fc;
+  --font-main: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.header {
+  border: 2px solid var(--text);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; right: -4px; bottom: -4px;
+  border: 2px solid var(--border-dark);
+  z-index: -1;
+}
+
+.puc-line { font-size: 11px; text-align: center; font-weight: 500; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; font-family: var(--font-mono); }
+.puc-title { font-size: 13px; text-align: center; font-weight: 500; margin-bottom: 4px; }
+.puc-sub { font-size: 12px; text-align: center; color: var(--muted); margin-bottom: 8px; font-family: var(--font-mono); }
+
+.nav-bar {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--blue-bg);
+  border: 1px solid #90c8e8;
+  border-radius: 6px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-bar a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all .2s;
+}
+
+.nav-bar a:hover { background: var(--blue-bg); }
+
+.info-box {
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  border-left: 4px solid var(--green);
+  padding: 12px 16px;
+  margin-bottom: 2rem;
+  font-size: 13px;
+  color: var(--green);
+  line-height: 1.7;
+}
+
+.info-box strong { font-weight: 500; }
+
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.q-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.q-text {
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.q-text strong { font-weight: 500; }
+.q-text em { font-style: italic; }
+
+.vf-options {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.vf-opt {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 13px;
+  background: var(--bg);
+}
+
+.show-ans-btn {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 7px 16px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.show-ans-btn:hover { background: var(--bg); color: var(--text); }
+
+.ans-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--blue-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--blue);
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.8;
+}
+
+.ans-box.show { display: block; }
+.ans-box strong { font-weight: 500; }
+.ans-box ol, .ans-box ul { margin-left: 1.5rem; margin-top: 8px; }
+.ans-box li { margin-bottom: 8px; }
+.ans-box code { background: rgba(15,61,110,.15); padding: 2px 6px; border-radius: 2px; font-family: var(--font-mono); }
+
+.tag-vf {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-radius: 3px;
+  font-size: 10px;
+  color: var(--amber);
+  font-weight: 500;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .nav-bar { flex-direction: column; }
+  .nav-bar a { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <p class="puc-line">PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS</p>
+    <p class="puc-title">Instituto de Ciências Exatas e Informática</p>
+    <p class="puc-sub">Fundamentos de Projeto e Análise de Algoritmos — Prof. Felipe Belém</p>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../../simulado/">← Voltar ao Simulado</a>
+    <a href="../p%20e%20np/">Ir para P, NP e co-NP →</a>
+    <a href="../transformacao%20e%20reducao/">Ir para Transformação e Redução →</a>
+  </div>
+
+  <div class="info-box">
+    <strong>ℹ️ Prova Anterior:</strong> Este conteúdo corresponde a uma prova aplicada em semestres anteriores. Use como referência para estudar os tópicos cobertos e estrutura de questões.
+  </div>
+
+  <div class="sec-title">Prova 2 – 2/2025</div>
+  <p style="font-size: 13px; color: var(--muted); margin-bottom: 2rem;">Fundamentos de Projeto e Análise de Algoritmos · PUC Minas</p>
+
+  <div class="question">
+    <div class="q-num">Questão 01 (05% cada)</div>
+    <div class="q-text">Avalie se as frases abaixo são <strong>Verdadeiras (V) ou Falsas (F)</strong>:</div>
+
+    <div style="margin-top: 12px; margin-bottom: 12px;">
+      <div style="margin-bottom: 12px;">
+        <span class="tag-vf">V ou F</span> <strong>a)</strong> Verificar se um grafo é bipartido é um problema da classe NP.
+        <button class="show-ans-btn" onclick="toggleAns(this)" style="margin-left: 12px;">Ver resposta</button>
+        <div class="ans-box">
+          <strong>Resposta: FALSO</strong><br><br>
+          Verificar bipartição está em <strong>P</strong>, não em NP. Um grafo é bipartido se pode ser 2-colorido, o que pode ser verificado com BFS/DFS em O(V+E). A confusão surge porque está em NP (podemos verificar em tempo polinomial), mas também está em P (podemos resolver em tempo polinomial). Estar em NP não significa estar apenas em NP — P ⊆ NP.
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <span class="tag-vf">V ou F</span> <strong>b)</strong> Transformar e reduzir um problema X ∈ P em outro Y ∈ NP implica em Y ∈ P.
+        <button class="show-ans-btn" onclick="toggleAns(this)" style="margin-left: 12px;">Ver resposta</button>
+        <div class="ans-box">
+          <strong>Resposta: FALSO</strong><br><br>
+          A direção da redução está errada! Se X ∈ P e reduzimos X para Y, isso apenas diz que Y é tão difícil quanto X (que é fácil) — não útil. A redução importante é do contrário: se um problema Y conhecido como NP-Difícil reduz para X, então X também é NP-Difícil. Reduzir <em>de</em> um problema em P não prova nada sobre a dificuldade do alvo.
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <span class="tag-vf">V ou F</span> <strong>c)</strong> O algoritmo de Bellman-Ford usa uma estratégia gulosa e de programação dinâmica.
+        <button class="show-ans-btn" onclick="toggleAns(this)" style="margin-left: 12px;">Ver resposta</button>
+        <div class="ans-box">
+          <strong>Resposta: VERDADEIRO</strong><br><br>
+          Bellman-Ford combina <strong>programação dinâmica</strong> (relaxa arestas iterativamente) com elementos de <strong>exploração gulosa</strong> (para cada aresta, escolhe a melhor redução de custo em cada passo). Executa V-1 rodadas, relaxando todas as arestas em cada rodada. Contraste: Dijkstra usa gulosa pura (sempre escolhe o vértice não visitado de menor distância).
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <span class="tag-vf">V ou F</span> <strong>d)</strong> O problema da parada de Turing pertence à classe co-NP.
+        <button class="show-ans-btn" onclick="toggleAns(this)" style="margin-left: 12px;">Ver resposta</button>
+        <div class="ans-box">
+          <strong>Resposta: FALSO</strong><br><br>
+          O problema da parada é <strong>indecidível</strong> — não pertence a nenhuma classe computacional convencional (P, NP, PSPACE, etc.). É um problema que não pode ser resolvido por nenhuma Máquina de Turing, independentemente do tempo. Está fora da hierarquia de complexidade dentro dos problemas decidíveis.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Questão 02 (20%)</div>
+    <div class="q-text">Explique por que a resposta <strong>P = NP</strong> para a conjectura <em>P vs NP</em> implica em <strong>NP = co-NP</strong>.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver solução ↓</button>
+    <div class="ans-box">
+      <strong>Demonstração:</strong><br><br>
+      Suponha P = NP. Queremos provar que NP = co-NP.<br><br>
+      <strong>Passo 1:</strong> Seja L ∈ NP qualquer problema. Como P = NP (por hipótese), temos L ∈ P.<br><br>
+      <strong>Passo 2:</strong> P é fechado sob complemento. Isto é: se L ∈ P, então o complemento de L também está em P. Isso porque basta negar a resposta do algoritmo polinomial de L. Logo, complemento(L) ∈ P.<br><br>
+      <strong>Passo 3:</strong> Como P = NP, temos complemento(L) ∈ P ⊆ NP. Mas complemento(L) ∈ NP é exatamente a definição de L ∈ co-NP.<br><br>
+      <strong>Passo 4:</strong> Como isso vale para todo L ∈ NP, temos NP ⊆ co-NP.<br><br>
+      <strong>Passo 5:</strong> Pelo argumento simétrico (aplicando ao complemento de qualquer elemento em co-NP), co-NP ⊆ NP.<br><br>
+      <strong>Conclusão:</strong> NP ⊆ co-NP e co-NP ⊆ NP, logo <strong>NP = co-NP</strong>.<br><br>
+      <strong>A chave:</strong> P é fechado sob complemento. Se tudo em NP está em P (porque P = NP), então os complementos também estão em P, e portanto em NP (porque P ⊆ NP). Isso força NP = co-NP.
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Questão 04 (20%)</div>
+    <div class="q-text">Mostre que o problema do <strong>conjunto independente máximo</strong> é NP-Completo reduzindo-o para o problema da <strong>coloração mínima de vértices</strong>. Demonstre seu raciocínio <strong>por completo</strong> no processo de transformação e resolução.</div>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver solução ↓</button>
+    <div class="ans-box">
+      <strong>Parte 1: Conjunto Independente ∈ NP</strong><br><br>
+      Dado grafo G, inteiro k e um certificado S (subconjunto de k vértices), podemos verificar se S é um conjunto independente:<br>
+      - Para cada par de vértices (u,v) em S, verificar que não existe aresta conectando-os<br>
+      - Tempo: O(k²) — polinomial em relação ao tamanho da entrada<br>
+      Logo, Conjunto Independente ∈ NP ✓<br><br>
+      <strong>Parte 2: Conjunto Independente é NP-Difícil</strong><br><br>
+      Vamos reduzir Coloração Mínima (conhecidamente NP-Completa) para Conjunto Independente.<br><br>
+      <strong>Relação fundamental:</strong><br>
+      Em uma k-coloração de um grafo G, cada classe de cor forma um <strong>conjunto independente</strong> (vértices de mesma cor não podem ser adjacentes).<br><br>
+      Reciprocamente, partindo conjuntos independentes, podemos colorir: se temos k conjuntos independentes que cobrem todos os vértices, usamos k cores (uma por conjunto).<br><br>
+      <strong>Transformação:</strong><br>
+      Dado (G, k) instância de Coloração Mínima ("é possível k-colorir G?"):<br>
+      1. G já está no formato de Conjunto Independente<br>
+      2. Pergunta equivalente: "Existe partição de V em k conjuntos independentes?"<br>
+      3. Equivalentemente: "Podemos encontrar k conjuntos independentes que cobrem todos os vértices?"<br><br>
+      <strong>Redução alternativa (via complemento):</strong><br>
+      - Seja G' o grafo complemento de G (mesmos vértices, arestas onde G não tem)<br>
+      - Um conjunto independente em G ⟺ Um clique em G'<br>
+      - Clique é NP-Completo, logo reduz para Conjunto Independente<br><br>
+      <strong>Conclusão:</strong><br>
+      - Conjunto Independente ∈ NP (certificado verificável)<br>
+      - Coloração Mínima ≤<sub>p</sub> Conjunto Independente (via relação de conjuntos de cores)<br>
+      - Logo, Conjunto Independente é NP-Difícil<br><br>
+      ∴ <strong>Conjunto Independente é NP-Completo</strong> ✓
+    </div>
+  </div>
+
+  <footer>
+    Prova 02 (Anterior) &nbsp;|&nbsp; Prof. Felipe Belém — PUC Minas &nbsp;|&nbsp; FPAA 2026
+  </footer>
+
+</div>
+
+<script>
+function toggleAns(btn) {
+  const box = btn.nextElementSibling;
+  const showing = box.classList.contains("show");
+  box.classList.toggle("show");
+  btn.textContent = showing ? "Ver resposta" : "Ocultar resposta";
+}
+</script>
+</body>
+</html>

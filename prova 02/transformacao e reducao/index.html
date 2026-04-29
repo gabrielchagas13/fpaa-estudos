@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Transformação e Redução — FPAA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #d8d6cf;
+  --border-dark: #a8a6a0;
+  --text: #1a1917;
+  --muted: #6b6a66;
+  --accent: #1a1917;
+  --green: #2d6a2d;
+  --green-bg: #eaf4ea;
+  --green-border: #90c890;
+  --red: #a32020;
+  --red-bg: #faeaea;
+  --red-border: #e8a0a0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf4e0;
+  --amber-border: #e8c870;
+  --purple: #3d2d8a;
+  --purple-bg: #f0eefa;
+  --purple-border: #c0b0f0;
+  --blue: #0f3d6e;
+  --blue-bg: #e8f2fc;
+  --font-main: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.header {
+  border: 2px solid var(--text);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; right: -4px; bottom: -4px;
+  border: 2px solid var(--border-dark);
+  z-index: -1;
+}
+
+.header h1 { font-size: 20px; margin-bottom: 8px; font-weight: 500; }
+.header p { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+.nav-bar {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--blue-bg);
+  border: 1px solid #90c8e8;
+  border-radius: 6px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-bar a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all .2s;
+}
+
+.nav-bar a:hover { background: var(--blue-bg); }
+
+.intro-box {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-left: 4px solid var(--amber);
+  padding: 12px 16px;
+  margin-bottom: 2rem;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.7;
+}
+
+.intro-box strong { font-weight: 500; }
+
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.question {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.q-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.q-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.q-field {
+  margin-bottom: 12px;
+}
+
+.q-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 4px;
+}
+
+.q-text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.q-text strong { font-weight: 500; }
+.q-text code { background: rgba(15,61,110,.1); padding: 2px 6px; border-radius: 2px; font-family: var(--font-mono); }
+
+.show-ans-btn {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 7px 16px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.show-ans-btn:hover { background: var(--bg); color: var(--text); }
+
+.ans-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--blue-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--blue);
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.75;
+}
+
+.ans-box.show { display: block; }
+.ans-box strong { font-weight: 500; }
+.ans-box code { background: rgba(15,61,110,.15); padding: 2px 6px; border-radius: 2px; font-family: var(--font-mono); }
+.ans-box ol { margin-left: 1.5rem; margin-top: 8px; }
+.ans-box li { margin-bottom: 6px; }
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .nav-bar { flex-direction: column; }
+  .nav-bar a { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Transformação e Redução (CLRS 34.3)</h1>
+    <p>Professor Felipe de Castro Belém · PUC Minas</p>
+    <p>Fundamentos de Projeto e Análise de Algoritmos</p>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../../simulado/">← Voltar ao Simulado</a>
+    <a href="../p%20e%20np/">Ir para P, NP e co-NP →</a>
+    <a href="../prova%20antiga/">Ir para Prova Antiga →</a>
+  </div>
+
+  <div class="intro-box">
+    <strong>Ideia geral:</strong> você tem um problema A pra resolver, mas só tem o algoritmo de B disponível. Você <strong>transforma</strong> A em B, roda B, e lê a resposta de volta.
+  </div>
+
+  <div class="sec-title">Exercício 1 — Caminho com mais arestas (Dijkstra)</div>
+
+  <div class="question">
+    <div class="q-title">Maior quantidade de arestas entre dois vértices</div>
+    <div class="q-subtitle">Usando Dijkstra para resolver</div>
+
+    <div class="q-field">
+      <div class="q-label">Problema</div>
+      <div class="q-text">Dado um grafo não ponderado e dois vértices s e t, achar o caminho com <strong>mais arestas</strong> entre eles.</div>
+    </div>
+
+    <div class="q-field">
+      <div class="q-label">Algoritmo disponível</div>
+      <div class="q-text">Dijkstra → acha o caminho de <strong>menor peso</strong>.</div>
+    </div>
+
+    <div class="q-field">
+      <div class="q-label">O problema</div>
+      <div class="q-text">Dijkstra <strong>minimiza</strong>. A gente quer <strong>maximizar</strong>. E Dijkstra não aceita pesos negativos.</div>
+    </div>
+
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver solução ↓</button>
+    <div class="ans-box">
+      <strong>Transformação correta:</strong><br>
+      Seja <code>M = |V| - 1</code> (máximo de arestas possível num caminho simples).<br><br>
+      <strong>Solução 1 (com Bellman-Ford):</strong> Use Bellman-Ford (aceita negativos) com <code>w'(u,v) = -1</code> para toda aresta. O caminho de maior número de arestas fica com maior peso total.<br><br>
+      <strong>Solução 2 (com Dijkstra em DAG):</strong> Se o grafo é DAG, use <code>w'(u,v) = M - 1</code> (constante positiva). Um caminho com mais arestas terá menor peso — depois invert a resposta.<br><br>
+      <strong>Etapas (Bellman-Ford):</strong><br>
+      <ol>
+        <li>Crie G' com os mesmos vértices e arestas de G</li>
+        <li>Atribua peso <code>w'(u,v) = -1</code> a toda aresta</li>
+        <li>Rode Bellman-Ford(G', s, t)</li>
+        <li>O caminho de maior peso em G' é o caminho com mais arestas em G</li>
+      </ol>
+      <strong>Por que funciona:</strong> Cada aresta adiciona -1 ao peso total. Mais arestas = maior valor negativo = maior número no final.<br><br>
+      <strong>Tempo:</strong> Construção O(E), Bellman-Ford O(VE) → polinomial ✅
+    </div>
+  </div>
+
+  <div class="sec-title">Exercício 2 — Emparelhamento máximo (Ford-Fulkerson)</div>
+
+  <div class="question">
+    <div class="q-title">Maior conjunto de arestas sem vértices em comum</div>
+    <div class="q-subtitle">Usando fluxo máximo para resolver</div>
+
+    <div class="q-field">
+      <div class="q-label">Problema</div>
+      <div class="q-text">Dado grafo G, achar o maior conjunto de arestas sem vértices em comum (emparelhamento máximo).</div>
+    </div>
+
+    <div class="q-field">
+      <div class="q-label">Algoritmo disponível</div>
+      <div class="q-text">Ford-Fulkerson → acha fluxo máximo numa rede.</div>
+    </div>
+
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver solução ↓</button>
+    <div class="ans-box">
+      <strong>Transformação (caso geral):</strong><br>
+      <ol>
+        <li><strong>Duplique cada vértice v</strong> em <code>v_in</code> e <code>v_out</code>, ligados por aresta <code>v_in → v_out</code> com <strong>capacidade 1</strong></li>
+        <li><strong>Crie fonte s</strong> e conecte <code>s → v_in</code> para todo v (capacidade 1)</li>
+        <li><strong>Crie sumidouro t</strong> e conecte <code>v_out → t</code> para todo v (capacidade 1)</li>
+        <li>Para cada aresta <code>(u,v)</code> do grafo original: crie <code>u_out → v_in</code> e <code>v_out → u_in</code> (capacidade 1)</li>
+        <li>Rode Ford-Fulkerson(N, s, t)</li>
+      </ol>
+      <strong>Leia a resposta:</strong><br>
+      - Fluxo máximo f* = tamanho do emparelhamento<br>
+      - As arestas do grafo original com fluxo 1 formam o emparelhamento<br><br>
+      <strong>Por que funciona:</strong> A capacidade 1 na aresta interna <code>v_in → v_out</code> garante que cada vértice participa de no máximo uma aresta do emparelhamento. Ford-Fulkerson acha quantos "caminhos independentes" existem = quantas arestas cabem.<br><br>
+      <strong>Tempo:</strong> Construção da rede O(V + E), Ford-Fulkerson O(E × f*) → polinomial ✅
+    </div>
+  </div>
+
+  <div class="sec-title">Exercício 3 — Conjunto independente máximo (via Cobertura de vértices)</div>
+
+  <div class="question">
+    <div class="q-title">Maior conjunto de vértices sem nenhuma aresta entre eles</div>
+    <div class="q-subtitle">Usando cobertura mínima de vértices</div>
+
+    <div class="q-field">
+      <div class="q-label">Problema</div>
+      <div class="q-text">Dado grafo G, achar o maior conjunto de vértices sem nenhuma aresta entre eles (conjunto independente máximo).</div>
+    </div>
+
+    <div class="q-field">
+      <div class="q-label">Algoritmo disponível</div>
+      <div class="q-text">CoberturaMinima → acha o menor conjunto de vértices que toca todas as arestas.</div>
+    </div>
+
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver solução ↓</button>
+    <div class="ans-box">
+      <strong>Transformação (nenhuma!):</strong> Use o mesmo grafo G diretamente.<br><br>
+      <strong>A relação fundamental:</strong><br>
+      <code>S é conjunto independente ⟺ V \ S é cobertura de vértices</code><br><br>
+      <strong>Etapas:</strong><br>
+      <ol>
+        <li>Rode CoberturaMinima(G) → obtém C* (cobertura mínima)</li>
+        <li>O conjunto independente máximo é <code>I* = V \ C*</code></li>
+        <li>Tamanho: <code>|I*| = |V| - |C*|</code></li>
+      </ol>
+      <strong>Por que funciona:</strong> Se C cobre todas as arestas (toca pelo menos um extremo de cada aresta), então fora de C (ou seja, em V \ C) não existe nenhuma aresta — porque se existisse, C não estaria cobrindo ela. Logo V \ C é independente. Quanto menor C, maior V \ C.<br><br>
+      <strong>Exemplo:</strong> V = {a,b,c,d}, arestas {(a,b),(b,c),(c,d)}.<br>
+      - Cobertura mínima: {b,c}<br>
+      - Conjunto independente máximo: V \ {b,c} = {a,d} ✅<br><br>
+      <strong>Tempo:</strong> Apenas O(V) para complementar o conjunto → polinomial ✅
+    </div>
+  </div>
+
+  <footer>
+    Transformação e Redução &nbsp;|&nbsp; Prof. Felipe Belém — PUC Minas &nbsp;|&nbsp; FPAA 2026
+  </footer>
+
+</div>
+
+<script>
+function toggleAns(btn) {
+  const box = btn.nextElementSibling;
+  const showing = box.classList.contains("show");
+  box.classList.toggle("show");
+  btn.textContent = showing ? "Ver solução ↓" : "Ocultar solução ↑";
+}
+</script>
+</body>
+</html>
