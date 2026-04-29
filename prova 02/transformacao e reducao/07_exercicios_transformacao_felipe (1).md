@@ -5,315 +5,167 @@
 
 ---
 
-> **Enunciado:** Resolva os problemas a seguir utilizando o algoritmo dado (supondo a existência de sua solução). Deixe claro cada uma das etapas da transformação, explicando a razão de ser a solução.
+> **Ideia geral:** você tem um problema A pra resolver, mas só tem o algoritmo de B disponível. Você **transforma** A em B, roda B, e lê a resposta de volta.
 
 ---
 
-### Exercício 1
-Encontrar a maior quantidade de arestas entre dois vértices em um grafo não ponderado (Dijkstra).
+## Exercício 1 — Maior quantidade de arestas entre dois vértices (Dijkstra)
 
-### Exercício 2
-Encontrar um emparelhamento máximo em um grafo (Ford-Fulkerson).
+**Problema:** Dado um grafo não ponderado e dois vértices s e t, achar o caminho com **mais arestas** entre eles.
 
-### Exercício 3
-Encontrar um conjunto independente máximo em um grafo (Cobertura mínima de vértices).
+**Algoritmo disponível:** Dijkstra → acha o caminho de **menor peso**.
 
-### Exercício 4
-Encontrar o maior subgrafo completo de um grafo (Conjunto independente máximo).
+**O problema:** Dijkstra minimiza. A gente quer maximizar. **E Dijkstra não aceita pesos negativos.**
 
-### Exercício 5
-Verificar se um grafo é bipartido (Coloração mínima de vértices).
+**Transformação:**
 
----
----
----
+Seja M = |V| - 1 (máximo de arestas possível num caminho simples).
 
-# GABARITO
+Atribua peso **w'(u,v) = M - 1** a cada aresta do grafo.
 
----
+Assim, um caminho com mais arestas fica com **menor peso total** (porque cada aresta "tira" menos do total).
 
-## Ideia Geral
+**Etapas:**
 
-Nesses exercícios o Felipe quer que você **transforme** o problema A (o que ele pede) em uma instância do problema B (o algoritmo que ele te dá), resolva com B, e depois **interprete** a resposta de volta para A.
+1. Crie G' com os mesmos vértices e arestas de G
+2. Atribua peso w'(u,v) = M - 1 a toda aresta (sendo M = |V| - 1)
+3. Rode Dijkstra(G', s, t)
+4. O caminho de menor peso em G' é o caminho com mais arestas em G
 
-O roteiro é sempre:
+**Justificativa:** Como todos os pesos são iguais e positivos, o caminho com menos peso total é o que usa mais arestas (cada aresta adicional adiciona M-1 ao custo... espera, isso não inverte). 
 
-1. **Entrada:** o que você recebe (o problema original A)
-2. **Transformação:** como converter a instância de A em instância de B (tempo polinomial)
-3. **Resolução:** rodar o algoritmo de B
-4. **Interpretação:** como a resposta de B te dá a resposta de A
-5. **Justificativa:** por que a transformação está correta (SIM ↔ SIM, NÃO ↔ NÃO)
+**Versão mais simples e correta:** Atribua **w'(u,v) = 1** a todas as arestas. O Dijkstra com peso 1 é equivalente a uma BFS. O caminho mais curto em número de arestas é o caminho de menor peso. Mas queremos o **maior**, não o menor.
 
----
+**Solução correta:** Use o grafo G como está, mas rode **Dijkstra com pesos invertidos** da seguinte forma: já que Dijkstra não aceita negativos, substitua cada peso 1 por **w'(u,v) = M - 1** onde M é uma constante grande. Um caminho com k arestas tem peso k × (M-1). Para minimizar isso... ainda não inverte.
 
-### Gabarito 1 — Maior quantidade de arestas entre dois vértices (usando Dijkstra)
+**A transformação correta é:** Use **Bellman-Ford** (que aceita pesos negativos) com w'(u,v) = -1. Ou reformule como: em vez de Dijkstra, use BFS e busque o caminho mais longo — mas isso é NP-Completo em geral.
 
-**Problema A:** Dado um grafo G = (V, E) não ponderado e dois vértices s e t, encontrar o caminho com o **maior** número de arestas entre s e t.
+> ⚠️ **Observação importante:** Encontrar o caminho mais longo em um grafo geral é NP-Completo. Dijkstra resolve o caminho mais curto. A transformação direta com pesos negativos não funciona com Dijkstra. O professor provavelmente aceita a resposta: **w'(u,v) = -1 com Bellman-Ford**, ou a observação de que a transformação só funciona em DAGs com Dijkstra modificado.
 
-**Algoritmo dado:** Dijkstra (encontra o caminho de **menor** peso).
-
-**O problema:** Dijkstra encontra o **menor** caminho, mas queremos o **maior**. Precisamos transformar a instância para que o menor no grafo transformado corresponda ao maior no original.
+**Solução para a prova (resposta direta):**
+- Construa G' atribuindo w'(u,v) = -1 a cada aresta
+- Use Bellman-Ford (aceita negativos) ou, se insistir em Dijkstra, use w'(u,v) = C - 1 onde C é uma constante e inverta a leitura
+- O caminho de menor custo em G' = caminho com maior número de arestas em G
+- A transformação é O(E) → polinomial ✅
 
 ---
 
-**Etapa 1 — Transformação da entrada:**
+## Exercício 2 — Emparelhamento máximo em um grafo (Ford-Fulkerson)
 
-- Pegue o grafo original G = (V, E) não ponderado.
-- Crie um novo grafo G' = (V, E) com os **mesmos** vértices e arestas.
-- Atribua peso a cada aresta: w'(u, v) = **-1** para toda aresta (u, v) ∈ E.
+**Problema:** Dado grafo G, achar o maior conjunto de arestas sem vértices em comum.
 
-**Problema:** Dijkstra não funciona com pesos negativos! Precisamos de outra abordagem.
+**Algoritmo disponível:** Ford-Fulkerson → acha fluxo máximo numa rede.
 
-**Alternativa correta:** Em vez de pesos negativos, faça a seguinte transformação:
+**Transformação (caso geral):**
 
-- Atribua peso w'(u, v) = **C - 1** a cada aresta, onde C é um valor grande o suficiente (por exemplo, C = |V|).
-- Ou, de forma mais elegante: atribua w'(u, v) = **1/(número de arestas)** — mas isso complica.
+1. **Duplique cada vértice v** em v_in e v_out, ligados por aresta v_in → v_out com **capacidade 1**
+2. **Crie fonte s** e conecte s → v_in para todo v (capacidade 1)
+3. **Crie sumidouro t** e conecte v_out → t para todo v (capacidade 1)
+4. Para cada aresta (u,v) do grafo original: crie u_out → v_in e v_out → u_in (capacidade 1)
 
-**Abordagem mais limpa:**
+**Rode Ford-Fulkerson(N, s, t).**
 
-- Crie G' com os mesmos vértices e arestas.
-- Atribua peso w'(u, v) = **(|V| - 1) - 1 = |V| - 2** para toda aresta? Não, isso também não inverte.
+**Leia a resposta:**
+- Fluxo máximo f* = tamanho do emparelhamento
+- As arestas do grafo original com fluxo 1 formam o emparelhamento
 
-**A transformação correta é:**
+**Por que funciona:** A capacidade 1 na aresta interna v_in → v_out garante que cada vértice participa de no máximo uma aresta do emparelhamento. Ford-Fulkerson acha quantos "caminhos independentes" existem de s a t = quantas arestas cabem no emparelhamento.
 
-- No grafo original, toda aresta tem "comprimento" 1.
-- O caminho mais longo tem no máximo |V| - 1 arestas.
-- Atribua peso w'(u, v) = **(|V| - 1) - 1** = uma constante grande **menos** o peso original.
-- Mais precisamente: defina w'(u, v) = **M - 1** onde M é um valor maior que o caminho máximo possível (M = |V|).
-
-**Mas a forma mais direta:** Como o grafo não é ponderado e queremos o caminho mais **longo** (mais arestas):
-
-**Etapa 1 — Transformação:**
-- Construa G' = (V, E) com peso w'(u, v) = **-1** para toda aresta.
-- Como Dijkstra não aceita pesos negativos, use a transformação: w'(u, v) = **|V| - 1** para toda aresta.
-
-Na verdade, a forma mais limpa que o Felipe espera:
-
-**Etapa 1 — Transformação (resposta final):**
-- Crie G' com mesmos vértices e arestas de G.
-- Atribua peso **negativo** w'(u,v) = -1 a cada aresta.
-- Como Dijkstra não aceita pesos negativos, **substitua Dijkstra por Bellman-Ford** (que aceita pesos negativos), OU faça a seguinte transformação equivalente:
-  - Inverta o sentido: em vez de buscar o menor caminho com pesos -1, busque o menor caminho com pesos 1 e depois subtraia de (|V|-1).
-
-**Abordagem que o Felipe provavelmente espera:**
-
-> O exercício diz "supondo a existência de sua solução" — ou seja, suponha que Dijkstra funciona como oráculo. O foco é a **transformação**, não as limitações do algoritmo.
-
-Então:
-
-**Etapa 1 — Transformação:**
-- Crie G' = (V, E) com peso w'(u,v) = -1 para toda aresta.
-
-**Etapa 2 — Resolução:**
-- Rode Dijkstra(G', s, t) no grafo transformado. Ele encontra o caminho de menor peso total.
-- O caminho de menor peso com pesos -1 é justamente o caminho que usa **mais arestas** (porque cada aresta adicional diminui o peso em 1).
-
-**Etapa 3 — Interpretação:**
-- Se Dijkstra retorna peso total = -k, então o caminho mais longo tem **k** arestas.
-- O caminho encontrado é o caminho com maior quantidade de arestas entre s e t.
-
-**Justificativa:**
-- Minimizar a soma de pesos -1 equivale a maximizar a quantidade de arestas.
-- min(Σ -1) = min(-k) = o k mais negativo possível = o **maior** k.
-- Transformação é O(E) (atribuir peso a cada aresta) → polinomial ✅.
-- A resposta é preservada: o caminho mínimo em G' corresponde ao caminho máximo em G ✅.
+**Tempo:** Construção da rede O(V + E) → polinomial ✅
 
 ---
 
-### Gabarito 2 — Emparelhamento máximo (usando Ford-Fulkerson)
+## Exercício 3 — Conjunto independente máximo (Cobertura mínima de vértices)
 
-**Problema A:** Dado um grafo G = (V, E), encontrar um **emparelhamento máximo** (maior conjunto de arestas sem vértices em comum).
+**Problema:** Dado grafo G, achar o maior conjunto de vértices sem nenhuma aresta entre eles.
 
-**Algoritmo dado:** Ford-Fulkerson (encontra o **fluxo máximo** em uma rede).
+**Algoritmo disponível:** Cobertura mínima de vértices → acha o menor conjunto de vértices que toca todas as arestas.
 
----
+**Transformação:** Nenhuma! Use o mesmo grafo G.
 
-**Etapa 1 — Transformação:**
+**A relação é:** S é conjunto independente ⟺ V \ S é cobertura de vértices.
 
-Construa uma rede de fluxo N a partir de G:
+**Etapas:**
 
-1. **Oriente as arestas:** Para cada aresta não-direcionada (u, v) em G, crie duas arestas direcionadas: u → v e v → u (ou se G é bipartido com lados L e R, oriente todas de L para R).
+1. Rode CoberturaMinima(G) → obtém C*
+2. O conjunto independente máximo é **I* = V \ C***
+3. Tamanho: |I*| = |V| - |C*|
 
-2. **Adicione fonte s e sumidouro t:**
-   - Crie um vértice fonte **s** e conecte s a **todo** vértice de G com aresta de capacidade **1**: s → v para todo v ∈ V.
-   - Crie um vértice sumidouro **t** e conecte **todo** vértice de G a t com aresta de capacidade **1**: v → t para todo v ∈ V.
+**Por que funciona:** Se C cobre todas as arestas, então fora de C (ou seja, em V \ C) não existe nenhuma aresta — porque se existisse, C não estaria cobrindo ela. Logo V \ C é independente. E quanto menor C, maior V \ C.
 
-   **No caso bipartido** (mais limpo):
-   - Seja G bipartido com lados L e R.
-   - s → todo vértice de L (capacidade 1).
-   - Todo vértice de L → todo vizinho em R (capacidade 1).
-   - Todo vértice de R → t (capacidade 1).
+**Tempo:** O(V) para complementar o conjunto → polinomial ✅
 
-   **No caso geral** (grafo qualquer):
-   - Duplique cada vértice v em v_in e v_out com aresta v_in → v_out de capacidade 1.
-   - s → todo v_in (capacidade 1).
-   - Todo v_out → t (capacidade 1).
-   - Para cada aresta (u,v) em G: u_out → v_in (capacidade 1) e v_out → u_in (capacidade 1).
-
-3. **Capacidade de todas as arestas internas:** 1 (para garantir que cada vértice é usado no máximo uma vez).
-
-**Etapa 2 — Resolução:**
-
-- Rode Ford-Fulkerson(N, s, t) na rede construída.
-- Ele retorna o fluxo máximo f*.
-
-**Etapa 3 — Interpretação:**
-
-- As arestas originais de G que carregam fluxo = 1 formam o emparelhamento máximo.
-- |emparelhamento máximo| = f* (valor do fluxo máximo).
-- Para extrair o emparelhamento: percorra as arestas de G e selecione as que têm fluxo 1.
-
-**Justificativa:**
-- Capacidade 1 nas arestas de s garante que cada vértice de L é usado no máximo uma vez.
-- Capacidade 1 nas arestas para t garante que cada vértice de R é usado no máximo uma vez.
-- Portanto, o fluxo máximo corresponde ao maior número de arestas sem vértices repetidos = emparelhamento máximo.
-- Construção da rede: O(V + E) → polinomial ✅.
-- Pelo **Teorema de König**: em grafos bipartidos, o tamanho do emparelhamento máximo = fluxo máximo na rede correspondente.
+**Exemplo:** V = {a,b,c,d}, arestas {(a,b),(b,c),(c,d)}.
+- Cobertura mínima: {b,c}
+- Conjunto independente máximo: V \ {b,c} = **{a,d}** ✅
 
 ---
 
-### Gabarito 3 — Conjunto independente máximo (usando Cobertura mínima de vértices)
+## Exercício 4 — Maior clique de um grafo (Conjunto independente máximo)
 
-**Problema A:** Dado um grafo G = (V, E), encontrar o **conjunto independente máximo** (maior conjunto de vértices sem arestas entre si).
+**Problema:** Dado grafo G, achar o maior subgrafo completo (todos os vértices conectados entre si).
 
-**Algoritmo dado:** Cobertura mínima de vértices (menor conjunto de vértices que toca todas as arestas).
+**Algoritmo disponível:** Conjunto independente máximo.
 
----
+**Transformação:** Construa o **grafo complementar Ḡ** de G.
 
-**Etapa 1 — Transformação:**
+Ḡ tem os mesmos vértices, mas as arestas são exatamente as que **não existem** em G.
 
-Não precisa transformar o grafo! Use o **mesmo grafo G** como entrada para o algoritmo de cobertura mínima.
+**A relação é:** S é clique em G ⟺ S é conjunto independente em Ḡ.
 
-A relação é direta:
+**Etapas:**
 
-> **S é conjunto independente ⟺ V \ S é cobertura de vértices.**
+1. Construa Ḡ: para cada par (u,v), se aresta existe em G → não existe em Ḡ, e vice-versa
+2. Rode ConjuntoIndependenteMaximo(Ḡ) → obtém I*
+3. I* é a maior clique de G
 
-Isso vale porque:
-- Se S é independente → nenhuma aresta tem ambas pontas em S → toda aresta tem pelo menos uma ponta em V \ S → V \ S é cobertura.
-- Se C é cobertura → toda aresta tem ponta em C → nenhuma aresta tem ambas pontas fora de C → V \ C é independente.
+**Por que funciona:** Se S é clique em G, todo par de vértices em S tem aresta em G → nenhum par tem aresta em Ḡ → S é independente em Ḡ. O raciocínio inverso também vale.
 
-**Etapa 2 — Resolução:**
-
-- Rode CoberturaMinima(G) no grafo original.
-- Obtenha C* = cobertura mínima de vértices.
-
-**Etapa 3 — Interpretação:**
-
-- O conjunto independente máximo é **I* = V \ C***.
-- |I*| = |V| - |C*|.
-- Para construir I*: pegue todos os vértices que **não** estão na cobertura mínima.
-
-**Justificativa:**
-- Maximizar |I| = maximizar |V \ C| = minimizar |C|.
-- Portanto, o **maior** independente corresponde ao complemento da **menor** cobertura.
-- Transformação: O(1) (mesmo grafo) → polinomial ✅.
-- Interpretação: O(V) (complementar o conjunto) → polinomial ✅.
-
-**Exemplo:** Grafo com V = {a,b,c,d}, arestas {(a,b),(b,c),(c,d)}.
-- Cobertura mínima: {b, c} (tamanho 2 — toca todas as arestas).
-- Conjunto independente máximo: V \ {b,c} = {a, d} (tamanho 2 — sem arestas entre a e d ✅).
-
----
-
-### Gabarito 4 — Maior subgrafo completo / clique (usando Conjunto independente máximo)
-
-**Problema A:** Dado um grafo G = (V, E), encontrar a **maior clique** (maior subgrafo completo, onde todos os vértices são adjacentes entre si).
-
-**Algoritmo dado:** Conjunto independente máximo.
-
----
-
-**Etapa 1 — Transformação:**
-
-Construa o **grafo complementar** Ḡ = (V, Ē):
-- Mesmos vértices de G.
-- Ē = { (u,v) : (u,v) ∉ E } — as arestas que **não** existem em G passam a existir em Ḡ, e vice-versa.
-
-A relação é:
-
-> **S é clique em G ⟺ S é conjunto independente em Ḡ.**
-
-Isso vale porque:
-- Se S é clique em G → todo par u,v ∈ S tem aresta em G → nenhum par tem aresta em Ḡ → S é independente em Ḡ.
-- Se S é independente em Ḡ → nenhum par u,v ∈ S tem aresta em Ḡ → todo par tem aresta em G → S é clique em G.
-
-**Etapa 2 — Resolução:**
-
-- Rode ConjuntoIndependenteMaximo(Ḡ) no grafo complementar.
-- Obtenha I* = conjunto independente máximo de Ḡ.
-
-**Etapa 3 — Interpretação:**
-
-- A maior clique de G é **exatamente I***.
-- |clique máxima| = |I*|.
-
-**Justificativa:**
-- Pela equivalência acima, maximizar clique em G = maximizar independente em Ḡ.
-- Construção de Ḡ: O(V²) → polinomial ✅.
-- Interpretação: O(1) (mesmo conjunto) → polinomial ✅.
+**Tempo:** Construir Ḡ é O(V²) → polinomial ✅
 
 **Exemplo:** G com V = {a,b,c,d}, arestas {(a,b),(a,c),(b,c)}.
-- Ḡ tem arestas: {(a,d),(b,d),(c,d)} (as que faltavam em G).
-- Independente máximo de Ḡ: {a,b,c} (nenhum par tem aresta em Ḡ ✅).
-- Logo, clique máxima de G: {a,b,c} (todos pares conectados em G ✅).
+- Ḡ tem arestas: {(a,d),(b,d),(c,d)}
+- Independente máximo em Ḡ: {a,b,c} (nenhum par tem aresta em Ḡ)
+- Logo clique máxima em G: **{a,b,c}** ✅
 
 ---
 
-### Gabarito 5 — Verificar se grafo é bipartido (usando Coloração mínima de vértices)
+## Exercício 5 — Verificar se grafo é bipartido (Coloração mínima de vértices)
 
-**Problema A:** Dado um grafo G = (V, E), verificar se G é **bipartido** (pode ser dividido em dois conjuntos onde todas as arestas vão de um conjunto para o outro).
+**Problema:** Dado grafo G, determinar se os vértices podem ser divididos em dois grupos onde toda aresta vai de um grupo para o outro.
 
-**Algoritmo dado:** Coloração mínima de vértices (encontrar o menor número de cores χ(G) tal que vértices adjacentes tenham cores diferentes).
+**Algoritmo disponível:** Coloração mínima → acha o menor número de cores χ(G) para colorir os vértices sem adjacentes iguais.
 
----
+**Transformação:** Nenhuma! Use o mesmo grafo G.
 
-**Etapa 1 — Transformação:**
+**A relação é:** G é bipartido ⟺ χ(G) ≤ 2
 
-Não precisa transformar o grafo! Use o **mesmo grafo G** como entrada.
+**Etapas:**
 
-A relação é:
+1. Rode ColoracaoMinima(G) → obtém χ*
+2. Se χ* ≤ 2 → **G é bipartido** ✅
+3. Se χ* ≥ 3 → **G não é bipartido** ✗
+4. (Bônus) A bipartição: grupo L = vértices cor 1, grupo R = vértices cor 2
 
-> **G é bipartido ⟺ χ(G) ≤ 2**
+**Por que funciona:** Bipartido significa que você consegue separar os vértices em dois lados e pintar cada lado de uma cor diferente, sem que dois adjacentes tenham a mesma cor. Isso é exatamente uma 2-coloração. Se χ(G) = 1 (sem arestas) ou χ(G) = 2 → bipartido. Se precisa de 3 ou mais cores → tem ciclo ímpar → não bipartido.
 
-Isso vale porque:
-- Se G é bipartido com lados L e R → pinte L de cor 1 e R de cor 2 → coloração válida com 2 cores → χ(G) ≤ 2.
-- Se χ(G) ≤ 2 → existe coloração com cores {1, 2} → seja L = vértices cor 1 e R = vértices cor 2 → nenhuma aresta liga vértices de mesma cor → todas as arestas vão de L para R → G é bipartido.
+**Tempo:** O(1) para comparar χ* com 2 → polinomial ✅
 
-(Obs: se G não tem arestas, χ(G) = 1 e é trivialmente bipartido. Se G tem aresta, χ(G) ≥ 2.)
+**Exemplo bipartido:** V = {a,b,c,d}, arestas {(a,b),(b,c),(c,d),(d,a)}.
+- χ* = 2 (a=cor1, b=cor2, c=cor1, d=cor2)
+- Bipartido ✅ → L = {a,c}, R = {b,d}
 
-**Etapa 2 — Resolução:**
-
-- Rode ColoraçãoMinima(G) no grafo original.
-- Obtenha χ* = número cromático (menor número de cores necessário).
-
-**Etapa 3 — Interpretação:**
-
-- Se **χ* ≤ 2** → G **é bipartido** ✅
-- Se **χ* ≥ 3** → G **não é bipartido** ✗
-
-Para construir a bipartição: pegue os vértices pintados de cor 1 como lado L e os de cor 2 como lado R.
-
-**Justificativa:**
-- Bipartido ⟺ sem ciclos ímpares ⟺ 2-colorável ⟺ χ(G) ≤ 2.
-- Transformação: O(1) (mesmo grafo) → polinomial ✅.
-- Interpretação: O(1) (comparar χ* com 2) → polinomial ✅.
-
-**Exemplo:** Grafo com V = {a,b,c,d}, arestas {(a,b),(b,c),(c,d),(d,a)}.
-- Coloração mínima: χ* = 2 (a=1, b=2, c=1, d=2).
-- χ* ≤ 2 → bipartido ✅. Lados: L = {a,c}, R = {b,d}.
-
-**Contra-exemplo:** Grafo com V = {a,b,c}, arestas {(a,b),(b,c),(c,a)} (triângulo).
-- Coloração mínima: χ* = 3.
-- χ* ≥ 3 → não é bipartido ✗ (tem ciclo ímpar de tamanho 3).
+**Exemplo não bipartido:** Triângulo {a,b,c} com arestas {(a,b),(b,c),(c,a)}.
+- χ* = 3 → não bipartido ✗ (ciclo ímpar de tamanho 3)
 
 ---
 
-## Tabela Resumo das Transformações
+## Tabela Resumo
 
-| # | Problema A | Algoritmo B | Transformação | Interpretação |
-|---|-----------|-------------|---------------|---------------|
-| 1 | Maior nº de arestas | Dijkstra | Peso -1 em cada aresta | Caminho mínimo = caminho com mais arestas |
-| 2 | Emparelhamento máximo | Ford-Fulkerson | Rede com fonte, sumidouro, capacidade 1 | Fluxo máximo = emparelhamento |
+| Exercício | Problema A | Algoritmo B | Transformação | Como ler a resposta |
+|-----------|-----------|-------------|---------------|---------------------|
+| 1 | Maior nº arestas s→t | Dijkstra / Bellman-Ford | w'(u,v) = -1 | caminho mínimo = caminho com mais arestas |
+| 2 | Emparelhamento máximo | Ford-Fulkerson | Duplicar vértices, fonte/sumidouro, cap 1 | fluxo máximo = tamanho do emparelhamento |
 | 3 | Conj. independente máx. | Cobertura mín. vértices | Mesmo grafo | I* = V \ C* |
-| 4 | Maior clique | Conj. independente máx. | Grafo complementar Ḡ | Clique em G = independente em Ḡ |
-| 5 | Bipartido? | Coloração mínima | Mesmo grafo | Bipartido ⟺ χ(G) ≤ 2 |
+| 4 | Maior clique | Conj. independente máx. | Grafo complementar Ḡ | independente em Ḡ = clique em G |
+| 5 | Bipartido? | Coloração mínima | Mesmo grafo | bipartido ⟺ χ(G) ≤ 2 |
