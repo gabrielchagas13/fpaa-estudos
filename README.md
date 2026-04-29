@@ -200,6 +200,19 @@ prova 02/
 
 ---
 
+## 📚 Simulado FPAA Online
+
+**Acesse o simulado interativo:**  
+🔗 [**Simulado P, NP, co-NP e NP-Completo**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/simulado/)
+
+O simulado contém:
+- ✅ 25 questões Verdadeiro/Falso com feedback  
+- ✅ 25+ questões dissertativas com gabaritos completos
+- ✅ Rastreamento automático de pontuação
+- ✅ Links para exercícios e material de estudo
+
+---
+
 ## 🏆 Suas Missões
 
 - [ ] Entender P vs NP (sem entrar em loop infinito)
