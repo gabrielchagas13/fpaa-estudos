@@ -202,14 +202,20 @@ prova 02/
 
 ## 📚 Simulado FPAA Online
 
-**Acesse o simulado interativo:**  
-🔗 [**Simulado P, NP, co-NP e NP-Completo**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/simulado/)
+**Acesse o material de estudo interativo:**  
+🔗 [**Material de Estudo Completo — Prova 02**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/)
 
-O simulado contém:
-- ✅ 25 questões Verdadeiro/Falso com feedback  
-- ✅ 25+ questões dissertativas com gabaritos completos
-- ✅ Rastreamento automático de pontuação
-- ✅ Links para exercícios e material de estudo
+📖 **Página inicial** com:
+- 🎯 Simulado interativo (50 questões: 25 V/F + 25 dissertativas)
+- 📝 Exercícios P, NP e co-NP (13 problemas)
+- 🔗 Transformações e Reduções (3 exercícios avançados)
+- 📋 Prova Antiga — Prova 02 (questões de referência)
+
+**Ou acesse diretamente:**
+- 🔗 [**Simulado**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/simulado/) — 50 questões V/F e dissertativas com feedback automático
+- 🔗 [**Exercícios P e NP**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/p%20e%20np/) — Classificação de algoritmos
+- 🔗 [**Transformações**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/transformacao%20e%20reducao/) — Reduções polinomiais
+- 🔗 [**Prova Antiga**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/prova%20antiga/) — Questões completas com gabarito
 
 ---
 
