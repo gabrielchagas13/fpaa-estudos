@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simulado FPAA — P, NP, co-NP, NP-Completo</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #d8d6cf;
+  --border-dark: #a8a6a0;
+  --text: #1a1917;
+  --muted: #6b6a66;
+  --accent: #1a1917;
+  --green: #2d6a2d;
+  --green-bg: #eaf4ea;
+  --green-border: #90c890;
+  --red: #a32020;
+  --red-bg: #faeaea;
+  --red-border: #e8a0a0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf4e0;
+  --amber-border: #e8c870;
+  --purple: #3d2d8a;
+  --purple-bg: #f0eefa;
+  --purple-border: #c0b0f0;
+  --blue: #0f3d6e;
+  --blue-bg: #e8f2fc;
+  --font-main: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+/* HEADER */
+.sim-header {
+  border: 2px solid var(--text);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  position: relative;
+}
+.sim-header::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; right: -4px; bottom: -4px;
+  border: 2px solid var(--border-dark);
+  z-index: -1;
+}
+.puc-line { font-size: 11px; text-align: center; font-weight: 500; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; font-family: var(--font-mono); }
+.puc-title { font-size: 13px; text-align: center; font-weight: 500; margin-bottom: 4px; }
+.puc-sub { font-size: 12px; text-align: center; color: var(--muted); margin-bottom: 16px; font-family: var(--font-mono); }
+.puc-meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
+.nome-field { flex: 1; }
+.nome-field label { font-size: 11px; font-weight: 500; letter-spacing: .06em; color: var(--muted); display: block; margin-bottom: 4px; font-family: var(--font-mono); }
+.nome-field input {
+  width: 100%; border: none; border-bottom: 1.5px solid var(--text);
+  background: transparent; font-size: 14px; font-family: var(--font-main);
+  padding: 4px 0; outline: none; color: var(--text);
+}
+.nota-box { border: 1.5px solid var(--text); padding: 8px 20px; text-align: center; font-family: var(--font-mono); }
+.nota-box span { font-size: 10px; color: var(--muted); display: block; }
+.nota-box strong { font-size: 18px; font-weight: 500; }
+
+/* OBS */
+.obs-box {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-left: 4px solid var(--amber);
+  padding: 12px 16px;
+  margin-bottom: 2.5rem;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.7;
+}
+.obs-box strong { font-weight: 500; }
+
+/* SCORE BAR */
+.score-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.score-big { font-size: 28px; font-weight: 500; font-family: var(--font-mono); color: var(--text); }
+.score-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
+.score-track { flex: 1; min-width: 120px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.score-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width .4s ease; }
+.reset-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border: 1px solid var(--border-dark);
+  background: var(--surface);
+  color: var(--muted);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .15s;
+}
+.reset-btn:hover { background: var(--bg); color: var(--text); border-color: var(--text); }
+
+/* SECTION TITLE */
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* TAGS */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: .04em;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.tag-easy { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.tag-med  { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.tag-hard { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.tag-trap { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+
+/* V/F QUESTIONS */
+.vf-q {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+  transition: border-color .2s, background .2s;
+}
+.vf-q.correct { border-color: var(--green-border); background: var(--green-bg); }
+.vf-q.wrong   { border-color: var(--red-border);   background: var(--red-bg); }
+.q-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.q-text { font-size: 14px; line-height: 1.65; margin-bottom: 12px; color: var(--text); }
+.vf-btns { display: flex; gap: 8px; }
+.vf-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 22px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .15s;
+  letter-spacing: .04em;
+}
+.vf-btn:hover { background: var(--bg); }
+.vf-btn.sel-v { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.vf-btn.sel-f { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.vf-btn:disabled { cursor: default; opacity: .7; }
+
+.feedback {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 3px solid;
+}
+.feedback.show { display: block; }
+.feedback.fb-ok   { background: var(--green-bg); color: var(--green); border-color: var(--green); }
+.feedback.fb-err  { background: var(--red-bg); color: var(--red); border-color: var(--red); }
+
+/* OPEN QUESTIONS */
+.open-q {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.open-q textarea {
+  width: 100%;
+  min-height: 110px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+  margin-top: 10px;
+  line-height: 1.6;
+  transition: border-color .15s;
+}
+.open-q textarea:focus { outline: none; border-color: var(--text); }
+.show-ans-btn {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 7px 16px;
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+.show-ans-btn:hover { background: var(--bg); color: var(--text); }
+.ans-box {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--blue-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--blue);
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.7;
+}
+.ans-box.show { display: block; }
+.ans-box strong { font-weight: 500; }
+
+/* POINTS BADGE */
+.pts {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .puc-meta { flex-direction: column; }
+  .score-section { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO ESTILO PUC -->
+  <div class="sim-header">
+    <p class="puc-line">PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS</p>
+    <p class="puc-title">Instituto de Ciências Exatas e Informática</p>
+    <p class="puc-sub">Fundamentos de Projeto e Análise de Algoritmos — Prof. Felipe Belém (felipebelem@pucminas.br)</p>
+    <div class="puc-meta">
+      <div class="nome-field">
+        <label>NOME</label>
+        <input type="text" placeholder="Gabriel Chagas Lace" autocomplete="off"/>
+      </div>
+      <div class="nota-box">
+        <span>NOTA</span>
+        <strong id="nota-disp">—</strong>
+        <span>em 50</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="obs-box">
+    <strong>Obs.:</strong> (i) a atividade é <strong>INDIVIDUAL</strong>; (ii) as respostas <strong>DEVEM</strong> estar justificadas; (iii) respostas <strong>SEM</strong> justificativa ou demonstração serão <strong>DESCONSIDERADAS</strong>; (iv) este simulado cobre exclusivamente <strong>P, NP, co-NP e NP-Completo</strong>.
+  </div>
+
+  <!-- PLACAR -->
+  <div class="score-section">
+    <div>
+      <div class="score-big" id="score-disp">0 / 0</div>
+      <div class="score-label">acertos nas questões V/F respondidas</div>
+    </div>
+    <div class="score-track"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reiniciar tudo</button>
+  </div>
+
+  <!-- PARTE 1: V/F -->
+  <div class="sec-title">01. [05% cada — total 25%] Verdadeiro ou Falso — justifique brevemente</div>
+  <div id="vf-wrap"></div>
+
+  <!-- PARTE 2: DISSERTATIVAS -->
+  <div class="sec-title">02–26. Questões abertas e analíticas</div>
+
+  <!-- BLOCO: CONCEITOS BÁSICOS -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco A — Definições e conceitos</div>
+
+  <div class="open-q">
+    <div class="q-num">Q26 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">Defina formalmente as classes P e NP. Qual a diferença entre <em>resolver</em> um problema e <em>verificar</em> uma solução? Dê um exemplo concreto de cada.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>P</strong> é a classe dos problemas de decisão que podem ser resolvidos por uma Máquina de Turing determinística em tempo polinomial O(n^k) no tamanho da entrada. <strong>NP</strong> é a classe dos problemas de decisão para os quais uma solução pode ser verificada em tempo polinomial dado um certificado. Resolver = encontrar a solução do zero; verificar = checar se uma solução candidata está correta. Exemplo P: testar se n é par (resolve em O(1)). Exemplo NP: dado um circuito booleano e uma atribuição, verificar se ela satisfaz a fórmula (polinomial); mas encontrar a atribuição pode não ser polinomial.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q27 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">O que é co-NP? Dê a definição formal e um exemplo de problema que pertence a co-NP mas que <em>não se sabe</em> se pertence a NP.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">co-NP = {L | complemento(L) ∈ NP}. É a classe dos problemas cujas instâncias negativas têm certificado verificável em tempo polinomial. Exemplo clássico: UNSAT (dada uma fórmula booleana, verificar que ela é insatisfatível). UNSAT ∈ co-NP porque SAT ∈ NP. Não se sabe se UNSAT ∈ NP — isso equivaleria a NP = co-NP, que é uma questão em aberto.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q28 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">O que significa dizer que um problema X é NP-Difícil? E NP-Completo? Qual a diferença entre os dois termos?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">NP-Difícil: todo problema em NP pode ser reduzido a X em tempo polinomial. X é pelo menos tão difícil quanto qualquer problema NP — mas X não precisa estar em NP (pode ser mais difícil ainda). NP-Completo: X ∈ NP E X é NP-Difícil. Ou seja, NP-Completo = NP ∩ NP-Difícil. Um problema de otimização como TSP-otimização é NP-Difícil mas não NP-Completo (pois não é um problema de decisão em NP da forma usual).</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q29 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">Explique o que é uma redução polinomial (≤p). Por que a transitividade das reduções é fundamental para a teoria de NP-Completude?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Uma redução polinomial de A para B (A ≤p B) é uma função f computável em tempo polinomial tal que: x ∈ A ⟺ f(x) ∈ B. Isso significa que B é pelo menos tão difícil quanto A. A transitividade (A ≤p B e B ≤p C implica A ≤p C) é fundamental porque permite construir cadeias de reduções: basta reduzir um novo problema a um NP-Completo já conhecido para provar que o novo também é NP-Difícil. Foi o que Karp fez em 1972 com 21 problemas a partir do SAT.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q30 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">O que é um certificado (ou testemunha) no contexto de NP? Qual a restrição sobre o tamanho e o tempo de verificação desse certificado?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Um certificado é uma estrutura de dados que "prova" que uma instância é uma resposta SIM para o problema. Para NP: (1) o certificado deve ter tamanho polinomial no tamanho da entrada; (2) dado o certificado, a verificação deve ser feita em tempo polinomial. Exemplo para CLIQUE: o certificado é o conjunto de vértices que forma o clique; verificar que são todos adjacentes é O(k²). Não é necessário que o certificado seja encontrado eficientemente — apenas que possa ser verificado.</div>
+  </div>
+
+  <!-- BLOCO B: P vs NP -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco B — A conjectura P vs NP</div>
+
+  <div class="open-q">
+    <div class="q-num">Q31 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Explique por que a resposta P = NP para a conjectura P vs NP implicaria em NP = co-NP. Deixe claro seu raciocínio passo a passo.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Seja L ∈ NP qualquer. Se P = NP, então L ∈ P. Como P é fechado sob complemento (basta inverter a saída), complemento(L) ∈ P ⊆ NP. Mas complemento(L) ∈ NP significa L ∈ co-NP (por definição de co-NP). Como isso vale para todo L ∈ NP, temos NP ⊆ co-NP. Pelo argumento simétrico (aplicando ao complemento), co-NP ⊆ NP. Logo NP = co-NP. A chave: P é fechado sob complemento, e se tudo em NP está em P, então os complementos também estão em P ⊆ NP.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q32 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Por que não foi provado que P ≠ NP até hoje? Discuta pelo menos dois obstáculos formais conhecidos que impedem as técnicas clássicas de resolver essa questão.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>1. Barreira de relativização (Baker-Gill-Solovay, 1975):</strong> existem oráculos A e B tais que P^A = NP^A e P^B ≠ NP^B. Isso significa que qualquer técnica de prova que "relativiza" (funciona com oráculo) não pode resolver P vs NP — e a maioria das técnicas clássicas de complexidade relativiza. <strong>2. Barreira de natural proofs (Razborov-Rudich, 1994):</strong> qualquer prova de lower bound que seja "natural" (construtiva e larga) implicaria a inexistência de funções pseudoaleatórias — o que contradiz hipóteses criptográficas amplamente aceitas. <strong>3. Barreira de algebrização (Aaronson-Wigderson, 2009):</strong> extensões algébricas das técnicas de relativização também são insuficientes. Nenhuma abordagem conhecida supera todos esses obstáculos simultaneamente.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q33 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">Quais seriam as implicações práticas se P = NP fosse provado amanhã? Cite pelo menos três áreas afetadas e explique o impacto.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>Criptografia:</strong> RSA, AES e a maioria dos sistemas de segurança baseados em dificuldade computacional (fatoração, logaritmo discreto) seriam quebrados — toda comunicação segura na internet colapsaria. <strong>Otimização:</strong> problemas como TSP, scheduling, roteamento de redes, que hoje usam heurísticas, teriam solução exata em tempo polinomial — revolução em logística, manufatura, IA. <strong>Bioinformática:</strong> dobramento de proteínas (NP-Completo) seria resolvido em tempo polinomial, acelerando descoberta de medicamentos. <strong>Matemática:</strong> verificar provas matemáticas = encontrá-las; possível automação total da descoberta matemática.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q34 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">A relação entre P, NP e co-NP pode ser representada em um diagrama de conjuntos. Descreva todas as relações conhecidas e as que são conjecturas em aberto.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Relações PROVADAS: P ⊆ NP; P ⊆ co-NP; P = co-P (P é fechado sob complemento); NP-Completo ⊆ NP; se P = NP então NP = co-NP. Relações CONJECTURADAS (não provadas): P ≠ NP; NP ≠ co-NP; existência de problemas NP-intermediários (nem P nem NP-Completo — Teorema de Ladner diz que se P ≠ NP eles existem). Isomorfismo de Grafos é candidato a NP-intermediário. O diagrama mais provável (assumindo P ≠ NP): P ⊊ (NP ∩ co-NP) ⊊ NP, e NP e co-NP se intersectam mas nenhum contém o outro.</div>
+  </div>
+
+  <!-- BLOCO C: PRIMEIRO NP-COMPLETO -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco C — Histórico e primeiro NP-Completo</div>
+
+  <div class="open-q">
+    <div class="q-num">Q35 <span class="pts">15%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">Qual foi o primeiro problema provado NP-Completo, quem o provou e em que ano? Por que essa prova foi um marco histórico para a teoria da computação?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">O primeiro problema NP-Completo foi o <strong>SAT (Boolean Satisfiability)</strong>, provado por Stephen Cook em 1971 (Teorema de Cook-Levin, independentemente por Leonid Levin na URSS). Marco histórico por: (1) estabeleceu que existe pelo menos um problema para o qual qualquer solução eficiente resolveria TODOS os problemas NP — criou o conceito de NP-Completude; (2) a prova usou a simulação de Máquinas de Turing por fórmulas booleanas, conectando computação e lógica; (3) abriu o caminho para Karp (1972) que reduziu 21 outros problemas ao SAT, mostrando que NP-Completude é ubíqua; (4) formalizou a questão P vs NP como problema central da ciência da computação teórica.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q36 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">O que é o problema SAT? Defina formalmente e dê um exemplo de instância satisfatível e uma insatisfatível.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">SAT: dada uma fórmula booleana φ em variáveis x₁,...,xₙ, existe uma atribuição de valores {V,F} que torna φ verdadeira? Instância satisfatível: φ = (x₁ ∨ x₂) ∧ (¬x₁ ∨ x₃) — atribuição x₁=V, x₂=V, x₃=V satisfaz. Instância insatisfatível: φ = (x₁) ∧ (¬x₁) — não existe atribuição que satisfaça ambas as cláusulas simultaneamente. 3-SAT é a versão restrita a cláusulas de exatamente 3 literais, e também é NP-Completo (mais útil para reduções por ter estrutura uniforme).</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q37 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Explique a ideia geral da prova de Cook de que SAT é NP-Difícil. Não é necessário a prova completa — descreva a estratégia central.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">A ideia de Cook: para qualquer problema L ∈ NP, existe uma Máquina de Turing não-determinística M que verifica L em tempo polinomial p(n). Cook constrói uma redução polinomial de L para SAT: dado uma entrada x, a redução cria uma fórmula booleana φ que codifica a computação de M em x — as variáveis representam o estado da fita, o estado da máquina e a posição da cabeça em cada passo de tempo. A fórmula φ é satisfatível se e somente se M aceita x (ou seja, existe uma computação aceita). Como M roda em p(n) passos, φ tem tamanho polinomial e é construída em tempo polinomial. Logo todo L ∈ NP reduz a SAT, provando que SAT é NP-Difícil.</div>
+  </div>
+
+  <!-- BLOCO D: PROBLEMAS ESPECÍFICOS -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco D — Problemas específicos: P, NP ou NP-Completo?</div>
+
+  <div class="open-q">
+    <div class="q-num">Q38 <span class="pts">10%</span></div>
+    <span class="tag tag-easy">Fácil</span>
+    <p class="q-text">Para cada problema abaixo, indique a classe (P, NP-Completo ou status incerto) e justifique: (a) ordenação de um vetor; (b) caminho mínimo em grafo com pesos positivos; (c) problema da mochila (versão decisão); (d) isomorfismo de grafos.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">(a) Ordenação: P — Mergesort/Heapsort em O(n log n). (b) Caminho mínimo com pesos positivos: P — Dijkstra em O((V+E) log V). (c) Mochila decisão ("existe subconjunto com valor ≥ V e peso ≤ W?"): NP-Completo — certificado é o subconjunto (verificável em polinomial); é NP-Difícil por redução de Subset Sum. Obs: tem algoritmo pseudo-polinomial O(nW) via DP, mas W pode ser exponencial em bits. (d) Isomorfismo de Grafos: status incerto — está em NP (certificado: a bijeção de vértices), e acredita-se que não seja NP-Completo, mas também não foi provado que está em P. Candidato clássico a problema NP-intermediário.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q39 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">O problema de 2-coloração de grafos está em P, mas 3-coloração é NP-Completo. Explique intuitivamente por que essa mudança de 2 para 3 cores causa essa diferença de complexidade.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">2-coloração equivale a verificar se o grafo é bipartido: uma BFS/DFS determina isso em O(V+E). A estrutura é rígida — se dois vértices adjacentes têm a mesma cor, a resposta é NÃO imediatamente, sem ambiguidade de escolha. Com 3 cores, a cada vértice há 3 opções e as restrições locais não se propagam de forma determinística — pode-se chegar a um impasse apenas depois de muitas escolhas que pareciam válidas. A "árvore de decisão" explode exponencialmente. Não se conhece critério estrutural polinomial equivalente ao bipartido para 3-coloração.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q40 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">O problema de verificar se um grafo possui um ciclo Hamiltoniano é NP-Completo. Mas verificar se possui um ciclo Euleriano está em P. Qual é a diferença estrutural que explica isso?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Ciclo Euleriano (visita todas as arestas) tem caracterização local polinomial: um grafo conexo tem ciclo Euleriano se e somente se todo vértice tem grau par (Teorema de Euler). Verificar isso é O(V+E). Ciclo Hamiltoniano (visita todos os vértices) não tem caracterização local conhecida equivalente — não existe condição simples de grau ou estrutura que determine sua existência. A diferença: Euleriano é sobre arestas com condição local; Hamiltoniano é sobre vértices com condição global sem equivalente polinomial conhecido.</div>
+  </div>
+
+  <!-- BLOCO E: REDUÇÕES -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco E — Reduções e provas de NP-Completude</div>
+
+  <div class="open-q">
+    <div class="q-num">Q41 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Mostre que o problema do Conjunto Independente Máximo é NP-Completo reduzindo-o a partir de um problema NP-Completo conhecido. Demonstre o raciocínio por completo.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>Passo 1 — Conjunto Independente ∈ NP:</strong> dado grafo G, inteiro k e um certificado S (subconjunto de vértices), verificar em O(k²) se nenhum par em S compartilha aresta. Polinomial. <strong>Passo 2 — NP-Difícil via Clique:</strong> Clique é NP-Completo. Dado (G, k) uma instância de Clique, construímos G' = grafo complemento de G (mesmos vértices, arestas onde G não tem arestas). A construção é O(V²). Claim: G tem clique de tamanho k ↔ G' tem conjunto independente de tamanho k. Prova: se S é clique em G, todo par em S tem aresta em G, logo nenhum par tem aresta em G', então S é independente em G'. Direção inversa análoga. Portanto Clique ≤p Conjunto Independente, provando NP-Dificuldade. Juntando com Passo 1: Conjunto Independente é NP-Completo.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q42 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Mostre que o problema da Coloração Mínima de Vértices é NP-Completo reduzindo-o a partir do Conjunto Independente ou de outro NP-Completo. Demonstre a transformação.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>Coloração ∈ NP:</strong> dado (G, k) e um certificado (a coloração), verificar que nenhuma aresta conecta vértices da mesma cor é O(E). <strong>NP-Difícil via Clique:</strong> a relação fundamental: o número cromático χ(G) ≥ tamanho do maior clique em G. Mais diretamente, Conjunto Independente ≤p Coloração: k cores em G correspondem a k conjuntos independentes (cada cor classe é um independente). Dado instância (G, k) de Conjunto Independente, perguntar se G tem conjunto independente de tamanho k equivale a perguntar sobre a estrutura da coloração do complemento. Formalmente, G tem conjunto independente de tamanho k ↔ G' (complemento) tem clique de tamanho k ↔ χ(G') ≥ k. A redução é polinomial. Como 3-Coloração específica é NP-Completo (redução do 3-SAT), Coloração geral é NP-Completo.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q43 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">Explique como provar que um novo problema X é NP-Completo. Quais são os dois passos obrigatórios? Por que ambos são necessários?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>Passo 1 — X ∈ NP:</strong> exibir um algoritmo de verificação polinomial — dado uma instância e um certificado de tamanho polinomial, verificar corretude em tempo polinomial. Necessário para garantir que X não é "mais difícil que NP". <strong>Passo 2 — X é NP-Difícil:</strong> escolher um problema Y já NP-Completo conhecido e mostrar Y ≤p X (redução polinomial de Y para X). Isso prova que X é pelo menos tão difícil quanto Y, e por transitividade pelo menos tão difícil quanto qualquer problema NP. Necessário para garantir que X não é "mais fácil" (estar em NP não basta — P ⊆ NP). Ambos juntos provam X ∈ NP ∩ NP-Difícil = NP-Completo. Erro comum: reduzir X para Y (direção errada) — isso não prova nada sobre a dificuldade de X.</div>
+  </div>
+
+  <!-- BLOCO F: PEGADINHAS E AVANÇADO -->
+  <div class="sec-title" style="margin-top:1.5rem; font-size:10px; color: var(--muted);">Bloco F — Pegadinhas e questões avançadas</div>
+
+  <div class="open-q">
+    <div class="q-num">Q44 <span class="pts">10%</span></div>
+    <span class="tag tag-trap">Pegadinha</span>
+    <p class="q-text">Um estudante afirma: "O problema da mochila tem algoritmo O(nW) de programação dinâmica, logo está em P." Ele está correto? Justifique com precisão.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Errado. O algoritmo O(nW) é pseudo-polinomial, não polinomial. A diferença crucial: complexidade polinomial é medida no <em>tamanho da representação</em> da entrada em bits, não no valor numérico. O valor W pode ser representado com log₂(W) bits. Logo O(nW) = O(n · 2^(log W)) — exponencial no tamanho da entrada. Se W = 2^(n), o algoritmo roda em O(n · 2^n) — claramente exponencial. Para ser polinomial, deveria ser O(n^k · (log W)^j) para constantes k, j. Como a mochila é NP-Completo, algoritmo pseudo-polinomial não contradiz P ≠ NP.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q45 <span class="pts">10%</span></div>
+    <span class="tag tag-trap">Pegadinha</span>
+    <p class="q-text">Se P = NP, isso significa que todos os problemas NP poderiam ser resolvidos pelo <em>mesmo</em> algoritmo? Explique o equívoco comum nessa afirmação.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Não. P = NP significa que para cada problema em NP <em>existe</em> um algoritmo polinomial — mas não que existe um único algoritmo universal para todos. Cada problema teria seu próprio algoritmo polinomial, assim como hoje cada problema em P tem algoritmos específicos (ordenação, caminho mínimo, etc. são problemas distintos com algoritmos distintos). O equívoco confunde "existe algoritmo polinomial para cada problema" com "existe um algoritmo que resolve todos". A estrutura de P é análoga à de NP nesse sentido — não há um algoritmo P universal.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q46 <span class="pts">10%</span></div>
+    <span class="tag tag-trap">Pegadinha</span>
+    <p class="q-text">Um problema X tem solução polinomial para entradas com n ≤ 1000 e exponencial para n > 1000. Isso significa que X ∈ P? Justifique.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Não. Classes de complexidade como P são definidas assintoticamente — descrevem o comportamento para n → ∞. Um problema está em P se existe um algoritmo O(n^k) que o resolve para toda entrada, independentemente do tamanho. Um problema que tem solução eficiente apenas para n limitado por uma constante pode ser trivialmente resolvido por lookup table — isso não diz nada sobre a complexidade assintótica. Além disso, toda linguagem finita está em P (pode-se hardcodar as respostas), mas isso não a torna interessante computacionalmente.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q47 <span class="pts">15%</span></div>
+    <span class="tag tag-trap">Pegadinha</span>
+    <p class="q-text">O Teorema de Ladner afirma que se P ≠ NP, então existem problemas NP-intermediários (nem em P, nem NP-Completos). Explique o que isso implica sobre a estrutura de NP e dê um candidato a NP-intermediário.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">O Teorema de Ladner (1975) prova que se P ≠ NP, então NP não é "dicotômico" — NP não se divide apenas em P e NP-Completo. Existe uma camada intermediária de problemas estritamente mais difíceis que P mas estritamente mais fáceis que NP-Completo. Isso implica que a hierarquia de dificuldade dentro de NP é rica e complexa. O candidato mais famoso a NP-intermediário: <strong>Isomorfismo de Grafos (GI)</strong> — está em NP (certificado: a bijeção), mas após décadas não se provou ser P nem NP-Completo. Outros candidatos: Fatoração de Inteiros (base da criptografia RSA), Logaritmo Discreto.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q48 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">O problema da parada de Turing é "mais difícil" que os problemas NP-Completos? Explique a relação entre decidibilidade e complexidade computacional.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">Sim, o problema da parada é estritamente mais difícil — mas em sentido diferente. NP-Completo fala de dificuldade dentro dos problemas <em>decidíveis</em> em tempo polinomial vs exponencial. O problema da parada é <em>indecidível</em> — não existe nenhuma Máquina de Turing que o resolva, independentemente do tempo. Hierarquia: P ⊆ NP ⊆ PSPACE ⊆ EXPTIME ⊆ ... ⊆ decidíveis ⊊ semidecidíveis (parada está aqui — RE mas não R) ⊊ indecidíveis. NP-Completo está dentro dos decidíveis. O problema da parada nem chegou a ser decidível — não está em nenhuma classe de complexidade computacional convencional.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q49 <span class="pts">10%</span></div>
+    <span class="tag tag-med">Médio</span>
+    <p class="q-text">Explique o que é o problema do Caixeiro Viajante (TSP) nas versões de decisão e otimização. Por que a versão otimização é NP-Difícil mas não NP-Completo (no sentido estrito)?</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box">TSP-decisão: "existe rota que visita todas as cidades com custo total ≤ k?" Esta versão é NP-Completo (certificado: a rota; é NP-Difícil por redução do Ciclo Hamiltoniano). TSP-otimização: "qual a rota de menor custo total?" Essa versão é um problema de otimização, não de decisão — não se enquadra diretamente na definição de NP (que é para problemas de decisão com resposta SIM/NÃO). É NP-Difícil porque resolver TSP-otimização implica resolver TSP-decisão (basta comparar o ótimo com k). Porém, como não é problema de decisão, não está "em NP" pela definição clássica, logo não pode ser NP-Completo. Diz-se que é NP-Difícil.</div>
+  </div>
+
+  <div class="open-q">
+    <div class="q-num">Q50 <span class="pts">15%</span></div>
+    <span class="tag tag-hard">Difícil</span>
+    <p class="q-text">[Questão bônus estilo Felipe] Suponha que alguém encontre um algoritmo O(n^100) para o SAT. Isso provaria que P = NP? Esse algoritmo seria útil na prática? Discuta as implicações teóricas e práticas.</p>
+    <textarea placeholder="Sua resposta..."></textarea>
+    <button class="show-ans-btn" onclick="toggleAns(this)">Ver gabarito ↓</button>
+    <div class="ans-box"><strong>Implicação teórica — SIM, P = NP:</strong> O(n^100) é polinomial por definição. SAT ∈ P implicaria P = NP (pois SAT é NP-Completo, logo todo NP reduziria a SAT e resolveria em polinomial). <strong>Implicação prática — praticamente inútil:</strong> n^100 para n = 100 (entradas minúsculas) é 10^200 operações — mais que o número de átomos no universo. Nenhum computador executaria isso em tempo razoável. Algoritmos práticos exigem expoentes pequenos (2, 3, no máximo). A teoria de complexidade é assintótica e não distingue expoentes — P = NP seria verdade com esse algoritmo, mas a "fronteira prática" entre tratável e intratável continuaria sendo por volta de O(n^3) ou O(n^4). Isso mostra a limitação de olhar apenas para a classe P vs NP sem considerar constantes e expoentes.</div>
+  </div>
+
+  <footer>
+    Simulado FPAA — P, NP, co-NP, NP-Completo &nbsp;|&nbsp; baseado nas provas do Prof. Felipe Belém — PUC Minas &nbsp;|&nbsp; Bons estudos, Gabriel 🤙
+  </footer>
+
+</div>
+
+<script>
+const vfData = [
+  {t:"Todo problema em P também pertence a NP.", a:true, tag:"easy", fb:"Correto. P ⊆ NP por definição: se um problema pode ser resolvido em tempo polinomial, certamente pode ser verificado em tempo polinomial usando a própria solução como certificado."},
+  {t:"Se um problema X ∈ P, então o complemento de X também pertence a P.", a:true, tag:"trap", fb:"Verdadeiro. P é fechado sob complemento — basta inverter a saída do algoritmo polinomial. Pegadinha: muitos confundem com NP, que não se sabe se é fechado sob complemento."},
+  {t:"Transformar e reduzir um problema X ∈ P em outro Y ∈ NP implica que Y ∈ P.", a:false, tag:"trap", fb:"Falso. Reduzir X ∈ P para Y ∈ NP não diz nada útil sobre Y — qualquer problema pode receber uma redução a partir de um problema fácil. A direção útil é reduzir um problema NP-Difícil PARA Y."},
+  {t:"O algoritmo de Bellman-Ford usa estratégia gulosa.", a:false, tag:"easy", fb:"Falso. Bellman-Ford usa programação dinâmica (relaxamento de arestas em V-1 rodadas). Dijkstra é o algoritmo de caminho mínimo que usa estratégia gulosa."},
+  {t:"O problema da parada de Turing pertence à classe co-NP.", a:false, tag:"hard", fb:"Falso. O problema da parada é indecidível — não pertence a nenhuma classe computacional convencional, nem NP nem co-NP. Está na hierarquia aritmética além de todos os problemas decidíveis."},
+  {t:"Verificar se um grafo é bipartido é um problema da classe P.", a:true, tag:"easy", fb:"Verdadeiro. Verificar bipartição pode ser feito com BFS/DFS em O(V+E), tentando 2-colorir o grafo. Se houver ciclo de comprimento ímpar, não é bipartido."},
+  {t:"Se NP = co-NP, então P = NP.", a:false, tag:"trap", fb:"Falso. NP = co-NP não implica P = NP. A implicação verdadeira é a inversa: P = NP implica NP = co-NP. NP = co-NP é uma condição mais fraca — pode ser verdade mesmo com P ≠ NP."},
+  {t:"Todo problema NP-Completo pode ser reduzido a qualquer outro problema NP-Completo em tempo polinomial.", a:true, tag:"med", fb:"Verdadeiro. Por definição de NP-Completude, todo problema em NP reduz polinomialmente a qualquer NP-Completo. Como NP-Completo ⊆ NP, isso vale entre quaisquer dois NP-Completos pela transitividade das reduções."},
+  {t:"Se provarmos que algum problema NP-Completo tem solução polinomial, então P = NP.", a:true, tag:"med", fb:"Verdadeiro. Todos os problemas NP se reduzem a qualquer NP-Completo em tempo polinomial. Se um NP-Completo ∈ P, encadeamos a redução polinomial com a solução polinomial, resolvendo qualquer NP em tempo polinomial."},
+  {t:"O problema do Caixeiro Viajante (versão decisão: existe rota ≤ k?) pertence à classe NP.", a:true, tag:"easy", fb:"Verdadeiro. Dado um certificado (uma rota), verificar se o custo total é ≤ k é feito em tempo polinomial O(n). Logo TSP-decisão ∈ NP."},
+  {t:"co-NP é o conjunto dos complementos dos problemas que NÃO estão em NP.", a:false, tag:"trap", fb:"Falso — pegadinha clássica! co-NP é o conjunto dos complementos dos problemas que ESTÃO em NP, não dos que não estão. Definição: co-NP = {L | complemento(L) ∈ NP}."},
+  {t:"O problema de verificar se um número é composto (não-primo) pertence exclusivamente à classe co-NP.", a:false, tag:"hard", fb:"Falso. COMPOSIÇÃO pertence à NP (certificado: um divisor não trivial — verificar divisibilidade é polinomial). Desde o algoritmo AKS (2002), tanto primalidade quanto composição estão em P. Não é exclusivo de co-NP."},
+  {t:"Se P ≠ NP, então nenhum problema NP-Completo pode ser resolvido em tempo polinomial.", a:true, tag:"med", fb:"Verdadeiro por contrapositiva: se algum NP-Completo estivesse em P, então P = NP (todos os NP reduzem a ele). Logo P ≠ NP implica que nenhum NP-Completo está em P."},
+  {t:"A redução polinomial é transitiva: se A ≤p B e B ≤p C, então A ≤p C.", a:true, tag:"easy", fb:"Verdadeiro. Composição de duas funções de redução polinomiais é polinomial. Isso é fundamental para construir cadeias de reduções e provar NP-Completude de novos problemas."},
+  {t:"Para provar que um problema X é NP-Completo, basta mostrar que X ∈ NP.", a:false, tag:"trap", fb:"Falso. É necessário mostrar TAMBÉM que X é NP-Difícil, ou seja, que todo problema em NP se reduz a X polinomialmente. Mostrar X ∈ NP apenas prova que X não é mais difícil que os NP-Completos — não que é tão difícil quanto eles."},
+  {t:"O problema SAT foi o primeiro a ser provado NP-Completo.", a:true, tag:"easy", fb:"Verdadeiro. Teorema de Cook-Levin (1971). Stephen Cook provou que SAT é NP-Completo, e a partir daí Karp (1972) demonstrou reduções para outros 21 problemas clássicos."},
+  {t:"Se X ∈ NP e Y é NP-Completo, e Y ≤p X, então X é NP-Completo.", a:true, tag:"hard", fb:"Verdadeiro. X ∈ NP (dado). Y ≤p X com Y NP-Completo significa que X é NP-Difícil (todo problema NP reduz a Y, que reduz a X por transitividade). Juntando: X ∈ NP e X é NP-Difícil → X é NP-Completo."},
+  {t:"O problema do Conjunto Independente Máximo pertence à classe P.", a:false, tag:"med", fb:"Falso. É NP-Completo. Não se conhece algoritmo polinomial para ele. Se estivesse em P, implicaria P = NP."},
+  {t:"A coloração mínima de vértices de um grafo arbitrário pertence à classe P.", a:false, tag:"med", fb:"Falso. É NP-Completo para k ≥ 3 cores em grafos gerais. Grafos específicos como bipartidos admitem 2-coloração em tempo polinomial (verificar bipartição via BFS)."},
+  {t:"Um problema em co-NP tem seu complemento necessariamente em NP.", a:true, tag:"trap", fb:"Verdadeiro — por definição direta de co-NP. Se L ∈ co-NP, então complemento(L) ∈ NP. É exatamente a definição."},
+  {t:"Se A ≤p B e A é NP-Difícil, então B também é NP-Difícil.", a:true, tag:"hard", fb:"Verdadeiro. Se todo problema NP reduz a A (A é NP-Difícil) e A reduz a B, então por transitividade todo problema NP reduz a B. Logo B é NP-Difícil."},
+  {t:"O problema de determinar se dois grafos são isomorfos é NP-Completo.", a:false, tag:"hard", fb:"Falso — questão em aberto! Isomorfismo de Grafos está em NP, mas não se sabe se é P ou NP-Completo. É candidato clássico a problema NP-intermediário (Teorema de Ladner)."},
+  {t:"Se P = NP, todo problema em NP poderia ser resolvido com o mesmo algoritmo universal.", a:false, tag:"trap", fb:"Falso. P = NP significa que para cada problema NP existe um algoritmo polinomial — mas não um único algoritmo universal. Cada problema teria seu próprio algoritmo polinomial, como hoje em P."},
+  {t:"O problema de verificar se uma fórmula booleana é insatisfatível (UNSAT) pertence à classe co-NP.", a:true, tag:"hard", fb:"Verdadeiro. UNSAT = complemento de SAT. Como SAT ∈ NP, UNSAT ∈ co-NP por definição. Verificar insatisfatibilidade exige checar que todas as atribuições falham — sem certificado curto conhecido."},
+  {t:"A existência de um algoritmo pseudo-polinomial para um problema NP-Completo prova que P = NP.", a:false, tag:"trap", fb:"Falso. Algoritmo pseudo-polinomial é polinomial no VALOR da entrada, não no tamanho em bits. Mochila tem O(nW) via DP, mas W pode ser 2^n — exponencial em bits. Não implica P = NP."}
+];
+
+const tagLabel = {easy:"Fácil", med:"Médio", hard:"Difícil", trap:"Pegadinha"};
+const tagClass = {easy:"tag-easy", med:"tag-med", hard:"tag-hard", trap:"tag-trap"};
+
+let answered = new Array(25).fill(null);
+
+function renderVF() {
+  const wrap = document.getElementById("vf-wrap");
+  wrap.innerHTML = "";
+  vfData.forEach((q, i) => {
+    const st = answered[i];
+    const isRight = st !== null && st === q.a;
+    const isWrong = st !== null && st !== q.a;
+    const div = document.createElement("div");
+    div.className = "vf-q" + (isRight ? " correct" : isWrong ? " wrong" : "");
+    div.innerHTML = `
+      <div class="q-num">Q${String(i+1).padStart(2,"0")}</div>
+      <span class="tag ${tagClass[q.tag]}">${tagLabel[q.tag]}</span>
+      <p class="q-text">${q.t}</p>
+      <div class="vf-btns">
+        <button class="vf-btn${st===true?" sel-v":""}" onclick="answer(${i},true)" ${st!==null?"disabled":""}>V — Verdadeiro</button>
+        <button class="vf-btn${st===false?" sel-f":""}" onclick="answer(${i},false)" ${st!==null?"disabled":""}>F — Falso</button>
+      </div>
+      <div class="feedback ${st!==null?"show":""} ${isRight?"fb-ok":isWrong?"fb-err":""}">
+        ${st!==null ? (isRight?"✓ Correto! ":"✗ Errado. ") + q.fb : ""}
+      </div>`;
+    wrap.appendChild(div);
+  });
+  updateScore();
+}
+
+function answer(i, val) {
+  if (answered[i] !== null) return;
+  answered[i] = val;
+  renderVF();
+}
+
+function updateScore() {
+  const done = answered.filter(a => a !== null).length;
+  const correct = answered.filter((a,i) => a !== null && a === vfData[i].a).length;
+  document.getElementById("score-disp").textContent = correct + " / " + done + " respondidas";
+  document.getElementById("score-fill").style.width = done > 0 ? Math.round(correct/done*100)+"%" : "0%";
+  document.getElementById("nota-disp").textContent = done > 0 ? correct : "—";
+}
+
+function resetAll() {
+  answered = new Array(25).fill(null);
+  renderVF();
+  document.querySelectorAll("textarea").forEach(t => t.value = "");
+  document.querySelectorAll(".ans-box").forEach(a => a.classList.remove("show"));
+  document.querySelectorAll(".show-ans-btn").forEach(b => b.textContent = "Ver gabarito ↓");
+}
+
+function toggleAns(btn) {
+  const box = btn.nextElementSibling;
+  const showing = box.classList.contains("show");
+  box.classList.toggle("show");
+  btn.textContent = showing ? "Ver gabarito ↓" : "Ocultar gabarito ↑";
+}
+
+renderVF();
+</script>
+</body>
+</html>
