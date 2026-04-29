@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ajuda para Prova — Complexidade de Grafos — FPAA</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #d8d6cf;
+  --border-dark: #a8a6a0;
+  --text: #1a1917;
+  --muted: #6b6a66;
+  --green: #2d6a2d;
+  --green-bg: #eaf4ea;
+  --green-border: #90c890;
+  --red: #a32020;
+  --red-bg: #faeaea;
+  --red-border: #e8a0a0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf4e0;
+  --amber-border: #e8c870;
+  --blue: #0f3d6e;
+  --blue-bg: #e8f2fc;
+  --blue-border: #7db3e8;
+  --font-main: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+}
+
+.header {
+  border: 2px solid var(--text);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  position: relative;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 4px; right: -4px; bottom: -4px;
+  border: 2px solid var(--border-dark);
+  z-index: -1;
+}
+.puc-line { font-size: 11px; text-align: center; font-weight: 500; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; font-family: var(--font-mono); }
+.puc-title { font-size: 13px; text-align: center; font-weight: 500; margin-bottom: 4px; }
+.puc-sub { font-size: 12px; text-align: center; color: var(--muted); margin-bottom: 0; font-family: var(--font-mono); }
+
+.nav-bar {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-radius: 6px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.nav-bar a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--blue);
+  color: var(--blue);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all .2s;
+}
+.nav-bar a:hover { background: var(--blue-bg); color: var(--text); }
+.nav-bar a.active { background: var(--green-bg); border-color: var(--green); color: var(--green); font-weight: 600; }
+
+.intro-box {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-left: 4px solid var(--blue);
+  padding: 12px 16px;
+  margin-bottom: 2rem;
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.7;
+}
+.intro-box strong { font-weight: 500; }
+
+.sec-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 2rem 0 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TABLE STYLES */
+.table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  color: var(--text);
+}
+
+td code {
+  background: rgba(15,61,110,.1);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  color: var(--blue);
+}
+
+tr:nth-child(even) {
+  background: var(--bg);
+}
+
+.algo-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.complexity-best {
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.complexity-avg {
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.complexity-worst {
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.space {
+  color: var(--blue);
+  font-family: var(--font-mono);
+}
+
+.note-box {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  border-left: 4px solid var(--amber);
+  padding: 12px 16px;
+  margin: 1.5rem 0;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.7;
+}
+.note-box strong { font-weight: 500; }
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  .page { padding: 1.5rem 1rem 4rem; }
+  .nav-bar { flex-direction: column; }
+  .nav-bar a { width: 100%; text-align: center; }
+  .table-wrapper { padding: 0.5rem; }
+  table { font-size: 11px; }
+  th, td { padding: 6px 8px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <p class="puc-line">PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS</p>
+    <p class="puc-title">Instituto de Ciências Exatas e Informática</p>
+    <p class="puc-sub">Fundamentos de Projeto e Análise de Algoritmos</p>
+  </div>
+
+  <div class="nav-bar">
+    <a href="../">↑ Voltar ao Início</a>
+    <a href="../simulado/">Simulado</a>
+    <a href="../p%20e%20np/">P e NP</a>
+    <a href="../transformacao%20e%20reducao/">Transformação</a>
+    <a href="../prova%20antiga/">Prova Antiga</a>
+    <a href="./" class="active">📋 Ajuda para Prova</a>
+  </div>
+
+  <div class="intro-box">
+    <strong>🎯 Resumo rápido de complexidades:</strong> Consulta rápida de tempos de execução dos principais algoritmos de grafos. Use como cheat sheet durante a prova!
+  </div>
+
+  <!-- SEÇÃO: BUSCAS -->
+  <div class="sec-title">Buscas em Grafos</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Algoritmo</th>
+          <th>Melhor Caso</th>
+          <th>Caso Médio</th>
+          <th>Pior Caso</th>
+          <th>Espaço</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="algo-name">BFS (Breadth-First Search)</td>
+          <td class="complexity-best">O(V + E)</td>
+          <td class="complexity-avg">O(V + E)</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>Fila; encontra caminho mais curto em grafos não ponderados</td>
+        </tr>
+        <tr>
+          <td class="algo-name">DFS (Depth-First Search)</td>
+          <td class="complexity-best">O(V + E)</td>
+          <td class="complexity-avg">O(V + E)</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>Pilha (recursiva ou iterativa); encontra componentes conexas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEÇÃO: CAMINHOS MÍNIMOs -->
+  <div class="sec-title">Caminhos Mínimos</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Algoritmo</th>
+          <th>Melhor Caso</th>
+          <th>Caso Médio</th>
+          <th>Pior Caso</th>
+          <th>Espaço</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="algo-name">Dijkstra</td>
+          <td class="complexity-best">O((V + E) log V)</td>
+          <td class="complexity-avg">O((V + E) log V)</td>
+          <td class="complexity-worst">O(V²)</td>
+          <td class="space">O(V)</td>
+          <td>Pesos positivos; com heap binário é O((V+E) log V)</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Bellman-Ford</td>
+          <td class="complexity-best">O(VE)</td>
+          <td class="complexity-avg">O(VE)</td>
+          <td class="complexity-worst">O(VE)</td>
+          <td class="space">O(V)</td>
+          <td>Pesos negativos permitidos; detecta ciclos negativos</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Floyd-Warshall</td>
+          <td class="complexity-best">O(V³)</td>
+          <td class="complexity-avg">O(V³)</td>
+          <td class="complexity-worst">O(V³)</td>
+          <td class="space">O(V²)</td>
+          <td>Todos os pares; pesos negativos permitidos; DP</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Prim</td>
+          <td class="complexity-best">O((V + E) log V)</td>
+          <td class="complexity-avg">O((V + E) log V)</td>
+          <td class="complexity-worst">O(V²)</td>
+          <td class="space">O(V)</td>
+          <td>Árvore geradora mínima; com heap é O((V+E) log V)</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Kruskal</td>
+          <td class="complexity-best">O(E log E)</td>
+          <td class="complexity-avg">O(E log E)</td>
+          <td class="complexity-worst">O(E log V)</td>
+          <td class="space">O(V)</td>
+          <td>AGM; ordena arestas (O(E log E)) + Union-Find (α(V))</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEÇÃO: FLUXO -->
+  <div class="sec-title">Fluxo Máximo</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Algoritmo</th>
+          <th>Complexidade</th>
+          <th>Espaço</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="algo-name">Ford-Fulkerson (DFS)</td>
+          <td class="complexity-worst">O(E · |f*|)</td>
+          <td class="space">O(V + E)</td>
+          <td>Depende do valor do fluxo máximo; pode ser exponencial</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Edmonds-Karp (BFS)</td>
+          <td class="complexity-worst">O(V · E²)</td>
+          <td class="space">O(V + E)</td>
+          <td>Ford-Fulkerson com BFS (caminho mais curto); polinomial</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Dinic</td>
+          <td class="complexity-worst">O(V² · E)</td>
+          <td class="space">O(V + E)</td>
+          <td>Grafo de níveis + fluxo de bloqueio; mais eficiente em prática</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Push-Relabel</td>
+          <td class="complexity-worst">O(V³) ou O(V² · E)</td>
+          <td class="space">O(V + E)</td>
+          <td>Mantém pré-fluxo; muito eficiente em implementação</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEÇÃO: OUTROS -->
+  <div class="sec-title">Outros Algoritmos Clássicos</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Algoritmo</th>
+          <th>Complexidade</th>
+          <th>Espaço</th>
+          <th>Problema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="algo-name">Topological Sort (DFS)</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>Ordenação topológica de DAG</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Componentes Fortemente Conexas (Tarjan)</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>CFCs em 1 DFS</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Componentes Fortemente Conexas (Kosaraju)</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>CFCs em 2 DFS</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Verificar Bipartição</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>BFS/DFS com 2 cores</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Detecção de Ciclo</td>
+          <td class="complexity-worst">O(V + E)</td>
+          <td class="space">O(V)</td>
+          <td>DFS com cores: branco, cinza, preto</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Ciclo Euleriano</td>
+          <td class="complexity-worst">O(E)</td>
+          <td class="space">O(V)</td>
+          <td>Verifica grau de cada vértice</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEÇÃO: RESUMO CLASSES P/NP -->
+  <div class="sec-title">Classificação de Problemas — P vs NP</div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Problema</th>
+          <th>Classe</th>
+          <th>Tempo de Solução</th>
+          <th>Certificado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="algo-name">Caminho Mínimo (Dijkstra)</td>
+          <td>P</td>
+          <td>O((V+E) log V)</td>
+          <td>Sim — o caminho</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Ciclo Hamiltoniano</td>
+          <td>NP-Completo</td>
+          <td>Exponencial (esperado)</td>
+          <td>Sim — sequência de vértices</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Ciclo Euleriano</td>
+          <td>P</td>
+          <td>O(V + E)</td>
+          <td>Sim — verificação de graus</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Clique Máximo</td>
+          <td>NP-Completo</td>
+          <td>Exponencial (esperado)</td>
+          <td>Sim — conjunto de vértices</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Conjunto Independente</td>
+          <td>NP-Completo</td>
+          <td>Exponencial (esperado)</td>
+          <td>Sim — conjunto de vértices</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Cobertura de Vértices</td>
+          <td>NP-Completo</td>
+          <td>Exponencial (esperado)</td>
+          <td>Sim — conjunto de vértices</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Coloração (k ≥ 3)</td>
+          <td>NP-Completo</td>
+          <td>Exponencial (esperado)</td>
+          <td>Sim — atribuição de cores</td>
+        </tr>
+        <tr>
+          <td class="algo-name">Coloração (k = 2)</td>
+          <td>P (Bipartição)</td>
+          <td>O(V + E)</td>
+          <td>Sim — 2-coloração</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-box">
+    <strong>⚠️ Nota importante:</strong> As complexidades listadas assumem representação de grafo com lista de adjacência. Com matriz de adjacência, substituir <strong>E</strong> por <strong>V²</strong>. Para grafos densos (E ≈ V²), ambas convergem.
+  </div>
+
+  <div class="note-box" style="background: var(--green-bg); border-color: var(--green-border); color: var(--green);">
+    <strong>💡 Dica para Prova:</strong> Memorize Dijkstra, Bellman-Ford, Floyd-Warshall, Prim, Kruskal, DFS, BFS. Saiba quando usar cada um. Entenda reduções entre NP-Completos. Boa sorte! 🤙
+  </div>
+
+  <footer>
+    Ajuda para Prova — Resumo de Complexidades &nbsp;|&nbsp; PUC Minas &nbsp;|&nbsp; FPAA 2026
+  </footer>
+
+</div>
+</body>
+</html>

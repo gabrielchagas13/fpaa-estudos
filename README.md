@@ -210,12 +210,14 @@ prova 02/
 - 📝 Exercícios P, NP e co-NP (13 problemas)
 - 🔗 Transformações e Reduções (3 exercícios avançados)
 - 📋 Prova Antiga — Prova 02 (questões de referência)
+- 📊 Ajuda para Prova (tabelas de complexidades)
 
 **Ou acesse diretamente:**
 - 🔗 [**Simulado**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/simulado/) — 50 questões V/F e dissertativas com feedback automático
 - 🔗 [**Exercícios P e NP**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/p%20e%20np/) — Classificação de algoritmos
 - 🔗 [**Transformações**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/transformacao%20e%20reducao/) — Reduções polinomiais
 - 🔗 [**Prova Antiga**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/prova%20antiga/) — Questões completas com gabarito
+- 🔗 [**Ajuda para Prova**](https://gabrielchagas13.github.io/fpaa-estudos/prova%2002/ajuda-prova/) — Tabelas de complexidades (cheat sheet)
 
 ---
 
